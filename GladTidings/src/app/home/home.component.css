@@ -1,0 +1,131 @@
+/*
+ * Globals
+ */
+
+/* Links */
+a,
+a:focus,
+a:hover {
+  color: #fff;
+}
+
+/* Custom default button */
+.btn-secondary,
+.btn-secondary:hover,
+.btn-secondary:focus {
+  color: #333;
+  text-shadow: none; /* Prevent inheritance from `body` */
+  background-color: #fff;
+  border: 0.05rem solid #fff;
+}
+
+/*
+ * Base structure
+ */
+ #cover-container{
+   height: 100vh;
+   width: 100%;
+   position: relative;
+ }
+#header-img{
+    height: 100vh;
+    width: 100%;
+    background-image: url("../../assets/homepageCover.JPG");
+    z-index: -1;
+}
+#header-img{
+  position: absolute;
+}
+main {
+    height: 100%;
+    display:grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    text-align: center;
+    height: 100%;
+    color: #fff;
+    text-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.5);
+    box-shadow: inset 0 0 5rem rgba(0, 0, 0, 0.5);
+    background: rgba(189, 189, 189, 0.186);
+}
+main h1{
+    align-self: end;
+    font-size: 5em;
+}
+main h1, main p {
+  font-weight: 900;
+}
+main > * {
+    place-self: center;
+}
+
+/*
+ * Cover
+ */
+.cover {
+  margin: auto;
+  padding: 25vh;
+}
+.cover .btn-lg {
+  padding: 0.75rem 1.25rem;
+  font-weight: 700;
+}
+
+.cover-content{
+  background-color:rgba(0, 0, 0, 0.193);
+  padding: 20px;
+}
+
+/* Featurettes
+------------------------- */
+  
+  /* Thin out the marketing headings */
+  .featurette-heading {
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -.05rem;
+    margin-top: 20px;
+  }
+  
+  .featurette-content{
+    display: grid;
+  }
+  .featurette-item{
+    height: auto;
+    align-self: center;
+  }
+  .featurette{
+      margin-left: 10%;
+      margin-right: 10%;
+  }
+  
+  /* RESPONSIVE CSS
+  -------------------------------------------------- */
+  
+  @media (min-width: 40em) {  
+    .featurette-heading {
+      font-size: 50px;
+    }
+  }
+
+  @media(max-width: 975px){
+    .cover{
+      padding: 10%;
+      font-size: .5rem;
+    }
+    .cover-heading{
+      font-size: 20px;
+    }
+  } 
+
+  @media(max-width:500px){
+    .lead{
+      font-size: 1rem;
+    }
+  }
+  @media(max-width:350px){
+    .cover{
+      padding: 5%;
+      font-size: .5rem;
+    }
+  }
