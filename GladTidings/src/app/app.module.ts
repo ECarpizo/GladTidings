@@ -8,6 +8,12 @@ import { HomeComponent } from './home/home.component';
 import { FooterComponent } from './footer/footer.component';
 import { NavbarComponent } from './navbar/navbar.component';
 
+import { CommonModule } from '@angular/common';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatButtonModule, MatCheckboxModule} from '@angular/material';
+
+import { SlimLoadingBarModule } from 'ng2-slim-loading-bar';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,7 +24,12 @@ import { NavbarComponent } from './navbar/navbar.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    CommonModule,
+    SlimLoadingBarModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -3,6 +3,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 if (environment.production) {
   enableProdMode();
