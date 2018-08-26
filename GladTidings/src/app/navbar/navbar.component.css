@@ -1,0 +1,13 @@
+.navbar-brand{
+    margin-left: 10%;
+}
+
+.navbar-nav{
+    margin-right: 10%;
+}
+
+@media(max-width:768px){
+    .navbar-brand{
+        margin-left: 0px;
+    }
+}
