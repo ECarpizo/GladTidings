@@ -15,14 +15,13 @@ a:hover {
 
 /* Custom default button */
 
-.btn-secondary,
-.btn-secondary:hover,
-.btn-secondary:focus {
-  color: #333;
-  text-shadow: none;
-  /* Prevent inheritance from `body` */
-  background-color: #fff;
-  border: 0.05rem solid #fff;
+a.btn.btn-outline-primary, a.btn.btn-lg.btn-outline-primary{
+  color: #000;
+}
+
+a.btn.btn-outline-primary:hover,
+a.btn.btn-outline-primary:focus{
+  color: #fff;
 }
 
 /*
@@ -194,14 +193,11 @@ main>* {
 /* Thin out the marketing headings */
 
 .featurette-heading {
+  grid-area: title;
   font-weight: 300;
   line-height: 1;
   letter-spacing: -.05rem;
   margin-top: 20px;
-}
-
-.featurette-content {
-  display: grid;
 }
 
 .featurette-item {
@@ -214,6 +210,29 @@ main>* {
   margin-right: 10%;
 }
 
+.layout-style-1{
+  display: grid;
+  grid-template-areas: "title picture" "text picture" "link picture";
+}
+.layout-style-2{
+  display: grid;
+  grid-template-areas: "picture title" "picture text" "picture link";
+}
+.featurette-link{
+  grid-area: link;
+}
+p.lead{
+  grid-area: text;
+}
+.picture{
+  grid-area: picture;
+  padding: 0px 20px;
+  max-height: 350px;
+}
+img.featurette-image.img-fluid.mx-auto{
+  max-height: 350px;
+}
+
 /* RESPONSIVE CSS
   -------------------------------------------------- */
 
@@ -223,6 +242,21 @@ main>* {
   }
 }
 
+@media(max-width:1175px){
+  img.featurette-image.img-fluid.mx-auto{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .row.featurette{
+    grid-template-areas: "title" "picture" "text" "link";
+    text-align: center;
+  }
+  .picture{
+    margin: 10px 0px;
+    padding: 0px;
+  }
+}
 @media(max-width: 975px) {
   .cover {
     padding: 10%;
@@ -251,6 +285,9 @@ main>* {
   div.jumbotron{
     padding-top: 30px;
     padding-bottom: 10px;
+  }
+  .trinity-person{
+    text-align: center;
   }
 }
 
