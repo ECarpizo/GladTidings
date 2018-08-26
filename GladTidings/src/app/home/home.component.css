@@ -101,7 +101,7 @@ main>* {
 ------------------------- */
 .jumbotron {
   margin: 0 !important;
-  padding: 2.5%;
+  padding: 19px;
 }
 
 /* Sections
@@ -182,7 +182,10 @@ main>* {
 /* Trinity
 ------------------------- */
 #trinity{
-  margin-top: 30px !important;
+  margin-top: 40px;
+  max-width: 80%;
+  /* margin-left: 5% !important;
+  margin-right: 5% !important; */
 }
 
 /* Featurettes
@@ -207,8 +210,8 @@ main>* {
 }
 
 .row.featurette {
-  margin-left: 15%;
-  margin-right: 15%;
+  margin-left: 10%;
+  margin-right: 10%;
 }
 
 /* RESPONSIVE CSS
@@ -228,15 +231,26 @@ main>* {
   .cover-heading {
     font-size: 20px;
   }
-  .jumbotron {
-    padding: 2%;
-  }
   .display-3{
     font-size: 2.25rem;
   }
-  .row.featurette, #trinity{
-    margin-left: 5%;
-    margin-right: 5%;
+}
+
+@media(max-width:768px){
+  div.col-md-4, div.col-md-7, div.col-md-5.featurette-item{
+    padding: 0;
+
+  }
+  div.row.featurette, div.col-md-7, div.col-md-5.featurette-item{
+    margin-left: 5% !important;
+    margin-right: 5% !important;
+  }
+  div.col-md-5.featurette-item{
+    margin-bottom: 15px;
+  }
+  div.jumbotron{
+    padding-top: 30px;
+    padding-bottom: 10px;
   }
 }
 
@@ -254,9 +268,6 @@ main>* {
   }
   .ptext .border{
     word-wrap: normal;
-  }
-  .col-md-4 {
-    margin: 5%;
   }
 }
 
@@ -276,15 +287,4 @@ main>* {
   }
 }
 
-/* .ptext {
-  position: absolute;
-  top: 43%;
-  left: 50%;
-  right: 50%;
-  width: 100%;
-  text-align: center;
-  color: #000;
-  font-size: 2em;
-  letter-spacing: 8px;
-  text-transform: uppercase;
-} */
+
