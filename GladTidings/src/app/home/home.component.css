@@ -74,6 +74,13 @@ main p {
 }
 
 main>* {
+  align-self: center;
+  justify-self: center;
+  /*
+  place self is short hadn for align-self and justify-self.
+  Align-self is related to position on the x-axis.
+  Justify-self is related to position on the y-axis.
+  */
   place-self: center;
 }
 
