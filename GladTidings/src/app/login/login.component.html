@@ -24,6 +24,16 @@
   <div class="header-content">
     <form class="form-login" action="login" method="post">
       <h1 class="h1 mb-1 font-weight-bold" routerLink="/home">Glad Tidings</h1>
+      <input type="email" [(ngModel)]="email" name="username" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+      <input type="password" [(ngModel)]="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+      <div id="login-buttons">
+        <button class="btn btn-lg btn-primary btn-block" id="signin-button" type="button" (click)="login(username.value, password.value)">Sign in</button>
+      </div>
+    </form>
+  </div>
+  <!-- <div class="header-content">
+    <form class="form-login" action="login" method="post">
+      <h1 class="h1 mb-1 font-weight-bold" routerLink="/home">Glad Tidings</h1>
       <input *ngIf="signIn || register" type="email" name="username" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
       <input *ngIf="next || register" type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
       <input *ngIf="register" type="text" name="username" id="inputUsername" class="form-control" placeholder="Username" required>
@@ -33,5 +43,5 @@
         <button *ngIf="show" class="btn btn-lg btn-primary btn-block" id="register-button" type="button" (click)="toggle(1); registerOrSignin(email, password, username)">Register</button>
       </div>
     </form>
-  </div>
+  </div> -->
 </header>
