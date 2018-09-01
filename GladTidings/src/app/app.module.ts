@@ -19,6 +19,7 @@ import { FormsModule } from '@angular/forms';
 
 /* Services */
 import { UserService } from './services/user.service';
+import { BaseUrlService } from './services/base-url.service';
 
 /* Code for importing new components to app.module:
 ng generate module app-routing --flat --module=app 
@@ -44,7 +45,7 @@ ng generate module app-routing --flat --module=app
     HttpClientModule,
     FormsModule
   ],
-  providers: [UserService],
+  providers: [BaseUrlService, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
