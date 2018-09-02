@@ -4,7 +4,8 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class BaseUrlService {
-  readonly base = "http://localhost:4200/api/user/";
+  // readonly base = "startinga-shard-00-02-0rpbs.mongodb.net:27017";
+  readonly base = "startinga-0rpbs.mongodb.net";
   constructor() { }
 
   public getBaseURL(): string {
