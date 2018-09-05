@@ -8,11 +8,12 @@
     </button>
     <div class="navbar-collapse" [ngClass]="{'collapse.show': toggleOn, 'collapse': !toggleOn}">
       <div class="navbar-nav ml-auto">
-        <a class="nav-item nav-link" href="#" (click)=setPage(0) [ngClass]="{'active': currentPage===0}">Home <span class="sr-only">(current)</span></a>
-        <a class="nav-item nav-link" (click)=setPage(1) [ngClass]="{'active': currentPage===1}" routerLink='/blog'>Blog</a>
-        <a class="nav-item nav-link" (click)=setPage(2) [ngClass]="{'active': currentPage===2}" routerLink='/resources'>Resources</a>
-        <a class="nav-item nav-link" (click)=setPage(3) [ngClass]="{'active': currentPage===3}" routerLink='/login'>Login</a>
-        <a class="nav-item nav-link" (click)=setPage(4) [ngClass]="{'active': currentPage===4}" routerLink='/login'>Sign Up</a>
+        <a class="nav-item nav-link" href="#" (click)="setPage(0); printCurr()" [ngClass]="{'active': currentPage===0}">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-item nav-link" (click)="setPage(1)" [ngClass]="{'active': currentPage===1}" routerLink='/blog'>Blog</a>
+        <a class="nav-item nav-link" (click)="setPage(2)" [ngClass]="{'active': currentPage===2}" routerLink='/resources'>Resources</a>
+        <a class="nav-item nav-link" routerLink='/login' *ngIf="user == null" >Login</a>
+        <a class="nav-item nav-link" routerLink='/login'>Sign Up</a>
+        <a class="nav-item nav-link" (click)="logout()" *ngIf="user != null">Logout</a>
       </div>
     </div>
   </nav>

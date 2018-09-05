@@ -1,37 +1,49 @@
-const express = require('express'),
-  cors = require('cors'),
-  bodyParser = require('body-parser'),
-  mongoose = require('mongoose'),
-  db = require('./properties');
+/*jshint esversion: 6 */
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+
+// Want to eventually separate the mongoose code into a separate file
+// and import it. Currently don't know how to.
+// const db = require('./config/db');
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-//Establishing MongoDB Connection
-mongoose.connect(db.connection, db.options)
-  .then(() => {
-      return mongoose.connection;
-    },
-    (err) => {
-      console.log(err);
-    });
+
+/*  MONGODB Connection
+
+ MongoDB Atlas URI
+ const uri = 'mongodb+srv://<Username>:<Password>@<Hostname>.mongodb.net/<DB name>?retryWrites=true';
+ replace <Username> with your desired database role username>
+ replace <Password> with the password for that DB username
+ Replace <Hostname> with your DB hostname
+ Replace <DB name> with the DB name
+*/
+
+const uri = '';
+const options = {
+  useNewUrlParser: true,
+  reconnectTries: Number.MAX_VALUE,
+  poolSize: 10
+};
+mongoose.connect(uri, options, (err) => {
+  () => {console.log('Unable to connect to DB');},
+  (err) => console.log('Error: '+err);
+});
+
 const connection = mongoose.connection;
+connection.once('open', () => {
+    console.log('MongoDB database connection established successfully!');
+});
 
-connection.on('error', console.error.bind(console, 'connection error:'));
-connection.once('open',
-  () => {
-    console.log('MongoDB connection established');
-  },
-  err => {
-    console.log('Unable to connect to MongoDB: ' + err);
-  }
-);
 
-// Routes
+// API routes
 const userRoutes = require('./routes/user.route');
-app.use('/user', userRoutes)
+app.use('/users', userRoutes);
 
-// Establishing Express server connection
+// Node server connection
 const port = process.env.PORT || 4000;
-const server = app.listen(port, () => console.log('Express server running on port ' + port));
+app.listen(4000, () => console.log('Express server running at http://localhost:'+port));

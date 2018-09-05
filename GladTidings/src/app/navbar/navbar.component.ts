@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from '../services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -9,8 +11,10 @@ export class NavbarComponent implements OnInit {
 
   toggleOn = false;
   currentPage = 0;
-
-  constructor() { }
+  user;
+  constructor(private userService: UserService, private router: Router) { 
+    this.user = this.userService.getCurrentUser();
+  }
 
   ngOnInit() {
   }
@@ -29,5 +33,11 @@ export class NavbarComponent implements OnInit {
   */
   setPage(index){
     this.currentPage = index;
+  }
+
+  logout() {
+    localStorage.removeItem('userID');
+    localStorage.removeItem('userType');
+    window.location.reload(true);
   }
 }

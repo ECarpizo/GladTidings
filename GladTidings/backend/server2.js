@@ -1,12 +1,54 @@
-//the line below this will get rid of the issues from jshint
 /*jshint esversion: 6 */
-const express = require('express'),
-  router = express.Router();
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
-const User = require('../models/User');
+// db = require('./config/db');
+const User = require('./models/User');
+
+const app = express();
+const router = express.Router();
+
+app.use(cors());
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+app.use(bodyParser.json());
+
+
+// const MongoClient = require('mongodb').MongoClient;
+
+const connection = 'mongodb+srv://user:pass@hostname/dbName?retryWrites=true';
+const options = {
+  useNewUrlParser: true,
+  reconnectTries: Number.MAX_VALUE,
+  poolSize: 10,
+  dbName: 'GladTidings'
+};
+
+mongoose.connect(connection, options)
+  .then(() => {
+      console.log('Mongoose established a connection with MongoDB');
+    },
+    err => {
+      console.log('Unable to connect to DB: ' + err);
+    });
+
+// mongoose.connection.on('connected', function () {
+//   // Hack the database back to the right one, because when using mongodb+srv as protocol.
+//   if (mongoose.connection.client.s.url.startsWith('mongodb+srv')) {
+//     mongoose.connection.db = mongoose.connection.client.db('GladTidings');
+//   }
+//   console.log('Connection to MongoDB established.')
+// });
+
+// API Endpoints
+// const userRoutes = require('./routes/user.route');
+// app.use('/user', userRoutes);
 
 // Create new User
-router.route('/create').post((req, res) => {
+router.route('/users/create').post((req, res) => {
   let user = new User(req.body);
   user.save()
     .then(user => {
@@ -29,7 +71,7 @@ router.route('/create').post((req, res) => {
 });
 
 // Get all Users
-router.route('').get((req, res) => {
+router.route('/users').get((req, res) => {
   User.find((err, users) => {
     if (err)
       res.json({
@@ -41,7 +83,7 @@ router.route('').get((req, res) => {
 });
 
 // Get User by ID
-router.route('/getById/:id').get((req, res) => {
+router.route('/users/:id').get((req, res) => {
   User.findById(req.params.id, (err, user) => {
     if (!user)
       res.json({
@@ -53,12 +95,12 @@ router.route('/getById/:id').get((req, res) => {
 });
 
 // Get User by email and password
-router.route('/getByCredentials').post((req, res) => {
+router.route('/users/getByCredentials').post((req, res) => {
   User.findOne({
-    email: req.body.email,
-    password: req.body.password
+    email: req.params.email,
+    password: req.params.password
   }, (err, user) => {
-    if (err || user === null)
+    if (err)
       res.json({
         message: "User does not exist",
         error: err
@@ -69,11 +111,12 @@ router.route('/getByCredentials').post((req, res) => {
 });
 
 // Update User info
-router.route('/update/:id').put((req, res) => {
+router.route('/users/update/:id').put((req, res) => {
   User.findById(req.params.id, (err, user) => {
     if (!user || err)
       return new Error('Could not load User: ' + err);
     else {
+      user._id = new mongoose.Types.ObjectId();
       user.firstName = req.body.firstName;
       user.lastName = req.body.lastName;
       user.email = req.body.email;
@@ -96,7 +139,7 @@ router.route('/update/:id').put((req, res) => {
 });
 
 // Delete (never have to delete users. Just disable active status to "false")
-router.route('/delete/:id').get(function (req, res) {
+router.route('/users/delete/:id').get(function (req, res) {
   User.findByIdAndRemove({
     _id: req.params.id
   }, (err, user) => {
@@ -110,4 +153,8 @@ router.route('/delete/:id').get(function (req, res) {
   });
 });
 
-module.exports = router;
+app.use('/', router);
+
+// Establishing Express server connection
+const port = process.env.PORT || 4000;
+app.listen(port, () => console.log(`Express server running at http://localhost:${port}`));
