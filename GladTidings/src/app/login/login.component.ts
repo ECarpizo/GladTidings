@@ -14,8 +14,8 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   registerForm: FormGroup;
   panelOpenState = false;
-  toggleLogin = true;
-  toggleRegister = true;
+  toggleLogin = false;
+  toggleRegister = false;
   loginPromptText = 'Login';
   registerPromptText = 'Register';
 
@@ -99,7 +99,7 @@ export class LoginComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  updateloginPromptText(){
+  updateLoginPromptText(){
     if(this.loginPromptText == 'Login')
       this.loginPromptText = 'Back';
     else
@@ -111,6 +111,22 @@ export class LoginComponent implements OnInit {
       this.registerPromptText = 'Back';
     else
       this.registerPromptText = 'Register';
+  }
+
+  closeLoginForm(){
+    if(this.toggleLogin) {
+      this.toggleLogin = !this.toggleLogin;
+      this.loginPromptText = 'Login'
+    }
+      
+  }
+
+  closeRegisterForm(){
+    if(this.toggleRegister) {
+      this.toggleRegister = !this.toggleRegister;
+      this.registerPromptText = 'Register'
+    }
+      
   }
 
   resetPromptText(){

@@ -23,55 +23,48 @@
   <div class="header-overlay"></div>
   <div class="header-content">
     <h1 class="h1 mb-1 font-weight-bold" routerLink="/home">Glad Tidings</h1>
-    <mat-accordion>
-      <mat-expansion-panel *ngIf="toggleLogin" (opened)="panelOpenState = true" (closed)="panelOpenState = false"
-        hideToggle>
-        <mat-expansion-panel-header (click)="toggleRegister = !toggleRegister; updateloginPromptText()">{{loginPromptText}}</mat-expansion-panel-header>
-
-        <form [formGroup]="loginForm" action="login" method="post">
-          <mat-form-field standard>
-            <input matInput formControlName='loginEmail' #loginEmail type="email" autofocus>
-            <mat-placeholder class="placeholder" *ngIf="getLoginEmail().value == ''">Email</mat-placeholder>
-            <mat-error *ngIf="loginEmail.invalid && loginEmail.touched">That doesn't look like an email address</mat-error>
-          </mat-form-field>
-          <mat-form-field>
-            <input matInput formControlName='loginPassword' #loginPassword type="password">
-            <mat-placeholder class="placeholder" *ngIf="getLoginPassword().value == ''">Password</mat-placeholder>
-            <!-- <mat-hint *ngIf="password.errors?.min && password.touched">Enter a password of at least 8 characters</mat-hint>
+    <button *ngIf="!toggleRegister" (click)="toggleLogin = !toggleLogin; closeRegisterForm(); updateLoginPromptText()" id="loginButton" class="btn btn-primary">{{loginPromptText}}</button>
+    <form *ngIf="toggleLogin" [formGroup]="loginForm" action="login" method="post" class="animated fadeIn delay-.2s primary-button mb-10">
+      <mat-form-field standard>
+        <input matInput formControlName='loginEmail' #loginEmail type="email" autofocus>
+        <mat-placeholder class="placeholder" *ngIf="getLoginEmail().value == ''">Email</mat-placeholder>
+        <mat-error *ngIf="loginEmail.invalid && loginEmail.touched">That doesn't look like an email address</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput formControlName='loginPassword' #loginPassword type="password">
+        <mat-placeholder class="placeholder" *ngIf="getLoginPassword().value == ''">Password</mat-placeholder>
+        <!-- <mat-hint *ngIf="password.errors?.min && password.touched">Enter a password of at least 8 characters</mat-hint>
             <mat-hint *ngIf="password.errors?.max && password.touched">20 characters is the max length for a password.</mat-hint>
             <mat-hint *ngIf="password.errors?.pattern && password.touched">Passwords must have at least 1 character and number.</mat-hint> -->
-          </mat-form-field>
-          <div>
-            <button mat-raised-button type="submit" id="loginSubmit" (click)="login(loginEmail.value, loginPassword.value)"
-              [disabled]="loginForm.pristine || loginForm.invalid">Signin</button>
-          </div>
-        </form>
-      </mat-expansion-panel>
-      <br>
-      <mat-expansion-panel *ngIf="toggleRegister" (opened)="panelOpenState = true" (closed)="panelOpenState = false"
-        hideToggle>
-        <mat-expansion-panel-header (click)="toggleLogin = !toggleLogin; updateRegisterPromptText()">{{registerPromptText}}</mat-expansion-panel-header>
-        <form [formGroup]="registerForm" action="login" method="post">
-          <mat-form-field>
-            <input matInput formControlName='firstName' #firstName type="text">
-            <mat-placeholder class="placeholder" *ngIf="getRegisterFirstName().value == ''">First Name</mat-placeholder>
-          </mat-form-field>
-          <mat-form-field>
-            <input matInput formControlName='lastName' #lastName type="text">
-            <mat-placeholder class="placeholder" *ngIf="getRegisterLastName().value == ''">Last Name</mat-placeholder>
-          </mat-form-field>
-          <mat-form-field>
-            <input matInput formControlName='registerEmail' #registerEmail type="email">
-            <mat-placeholder class="placeholder" *ngIf="getRegisterEmail().value == ''">Email</mat-placeholder>
-          </mat-form-field>
-          <mat-form-field>
-            <input matInput formControlName='registerPassword' #registerPassword type="password">
-            <mat-placeholder class="placeholder" *ngIf="getRegisterPassword().value == ''">Password</mat-placeholder>
-          </mat-form-field>
-          <button mat-raised-button id="registerSubmit" type="submit" (click)="register(firstName.value, lastName.value, registerEmail.value, registerPassword.value)"
-            [disabled]="registerForm.pristine || registerForm.invalid">Create Account</button>
-        </form>
-      </mat-expansion-panel>
-    </mat-accordion>
+      </mat-form-field>
+      <div>
+        <button mat-raised-button type="submit" id="loginSubmit" (click)="login(loginEmail.value, loginPassword.value)"
+          [disabled]="loginForm.pristine || loginForm.invalid" class="btn btn-success">Signin</button>
+      </div>
+    </form>
+    <!-- </mat-expansion-panel> -->
+    <br>
+    <button *ngIf="!toggleLogin" (click)="toggleRegister = !toggleRegister; closeLoginForm(); updateRegisterPromptText()" id="registerButton" class="btn btn-success">{{registerPromptText}}</button>
+    <form *ngIf="toggleRegister" [formGroup]="registerForm" action="login"
+      method="post" class="animated fadeIn delay-.2s ">
+      <mat-form-field>
+        <input matInput formControlName='firstName' #firstName type="text">
+        <mat-placeholder class="placeholder" *ngIf="getRegisterFirstName().value == ''">First Name</mat-placeholder>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput formControlName='lastName' #lastName type="text">
+        <mat-placeholder class="placeholder" *ngIf="getRegisterLastName().value == ''">Last Name</mat-placeholder>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput formControlName='registerEmail' #registerEmail type="email">
+        <mat-placeholder class="placeholder" *ngIf="getRegisterEmail().value == ''">Email</mat-placeholder>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput formControlName='registerPassword' #registerPassword type="password">
+        <mat-placeholder class="placeholder" *ngIf="getRegisterPassword().value == ''">Password</mat-placeholder>
+      </mat-form-field>
+      <button mat-raised-button id="registerSubmit" type="submit" (click)="register(firstName.value, lastName.value, registerEmail.value, registerPassword.value)"
+        [disabled]="registerForm.pristine || registerForm.invalid" class="btn btn-primary">Create Account</button>
+    </form>
   </div>
 </header>

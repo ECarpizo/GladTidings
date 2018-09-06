@@ -298,7 +298,7 @@ img.featurette-image.img-fluid.mx-auto{
   }
 }
 
-@media(max-width:568px) {
+@media(max-width:768px) {
   .pimg1,
   .pimg2,
   .pimg3 {
