@@ -12,9 +12,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-
 /*  MONGODB Connection
-
  MongoDB Atlas URI
  const uri = 'mongodb+srv://<Username>:<Password>@<Hostname>.mongodb.net/<DB name>?retryWrites=true';
  replace <Username> with your desired database role username>
@@ -22,17 +20,13 @@ app.use(bodyParser.json());
  Replace <Hostname> with your DB hostname
  Replace <DB name> with the DB name
 */
-
 const uri = '';
 const options = {
   useNewUrlParser: true,
   reconnectTries: Number.MAX_VALUE,
   poolSize: 10
 };
-mongoose.connect(uri, options, (err) => {
-  () => {console.log('Unable to connect to DB');},
-  (err) => console.log('Error: '+err);
-});
+mongoose.connect(uri, options);
 
 const connection = mongoose.connection;
 connection.once('open', () => {
@@ -42,7 +36,13 @@ connection.once('open', () => {
 
 // API routes
 const userRoutes = require('./routes/user.route');
+const postRoutes = require('./routes/post.route');
+const commentRoutes = require('./routes/comment.route');
+const categoryRoutes = require('./routes/category.route');
 app.use('/users', userRoutes);
+app.use('/posts', postRoutes);
+app.use('/comments', commentRoutes);
+app.use('/categories', categoryRoutes);
 
 // Node server connection
 const port = process.env.PORT || 4000;

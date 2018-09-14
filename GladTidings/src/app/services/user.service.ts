@@ -26,7 +26,7 @@ export class UserService {
   setCurrentUser(user: User): void {
     this.currentUser = user;
   }
-  getUsersArray(): User[]{
+  getUsersArray(): User[] {
     return this.users;
   }
   public getCachedId(): string {
@@ -35,22 +35,17 @@ export class UserService {
   public getCachedUserType(): string {
     return localStorage.getItem('userType');
   }
-  addUser(firstName, lastName, email, password): boolean {
+  addUser(firstName, lastName, email, password): Observable<User> {
     let user = {
       'firstName': firstName,
       'lastName': lastName,
       'email': email,
       'password': password
     }
-    this.http.post(this.baseUrlService.getBaseURL()+'/users/create', user);
-    this.getUserByCredentials(email, password).subscribe(data => user = data);
-    if(user !== null)
-      return false;
-    else
-      return true;
+    return this.http.post<User>(this.baseUrlService.getBaseURL() + '/users/create', user);
   }
   getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.baseUrlService.getBaseURL()+'/users');
+    return this.http.get<User[]>(this.baseUrlService.getBaseURL() + '/users');
   }
   getUserByCredentials(email: string, password: string): Observable<User> {
     const values = {
@@ -60,7 +55,7 @@ export class UserService {
     return this.http.post<User>(this.baseUrlService.getBaseURL() + '/users/getByCredentials', values);
   }
   getUserById(id): Observable<User> {
-    return this.http.get<User>(this.baseUrlService.getBaseURL()+'/users/getById/'+id);
+    return this.http.get<User>(this.baseUrlService.getBaseURL() + '/users/getById/' + id);
   }
   updateUser(user: User): Observable<User> {
     let userInfo = {
@@ -71,10 +66,10 @@ export class UserService {
       'tier': user.tier,
       'active': user.active
     }
-    this.http.put(this.baseUrlService.getBaseURL()+'/users/update/'+user._id, userInfo );
+    this.http.put(this.baseUrlService.getBaseURL() + '/users/update/' + user._id, userInfo);
     return this.getUserById(user._id);
   }
-  deleteUser(user:User): boolean {
+  deleteUser(user: User): boolean {
     let userInfo = {
       'firstName': user.firstName,
       'lastName': user.lastName,
@@ -83,10 +78,10 @@ export class UserService {
       'tier': user.tier,
       'active': 'false'
     }
-    this.http.put(this.baseUrlService.getBaseURL()+'/update/'+user._id, userInfo);
+    this.http.put(this.baseUrlService.getBaseURL() + '/update/' + user._id, userInfo);
     let flag: User;
     this.getUserById(user._id).subscribe(data => flag = data);
-    if(flag.active.toString() == "true")
+    if (flag.active.toString() == "true")
       return false;
     else
       return true;

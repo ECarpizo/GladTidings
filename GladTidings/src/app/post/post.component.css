@@ -1,0 +1,42 @@
+#post{
+    display:grid;
+    grid-template-areas: "title . ." "picture picture picture" "author . ." "createdDate . ." "comments . ." "content content content";
+    height: 200px;
+    background-color: blue;
+}
+
+#title{
+    grid-area: title;
+    grid-template-rows: 1fr;
+    background-color: red;
+}
+
+#picture{
+    grid-area: picture;
+    grid-template-rows: 1fr;
+    background-color: violet;
+}
+
+#author{
+    grid-area: author;
+    grid-template-rows: 1fr;
+    background-color: green;
+}
+
+#createdDate{
+    grid-area: createdDate;
+    grid-template-rows: 1fr;
+    background-color: yellow;
+}
+
+#comments{
+    grid-area: comments;
+    grid-template-rows: 1fr;
+    background-color: orange;
+}
+
+#content{
+    grid-area: content;
+    grid-template-rows: 1fr;
+    background-color: purple;
+}

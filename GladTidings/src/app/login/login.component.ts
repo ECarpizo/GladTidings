@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
   registerForm: FormGroup;
+  hidePassword = true;
   panelOpenState = false;
   toggleLogin = false;
   toggleRegister = false;
@@ -85,52 +86,47 @@ export class LoginComponent implements OnInit {
         this.userService.setCurrentUser(data);
         localStorage.setItem("userID", data._id);
         localStorage.setItem("userType", data.tier);
-        this.resetPromptText();
-        this.panelOpenState = false;
         this.router.navigate(['/home']);
       }
     });
   }
 
   register(firstName: string, lastName: string, email: string, password: string) {
-    this.userService.addUser(firstName, lastName, email, password);
-    this.resetPromptText();
-    this.panelOpenState = false;
-    this.router.navigate(['/login']);
-  }
-
-  updateLoginPromptText(){
-    if(this.loginPromptText == 'Login')
-      this.loginPromptText = 'Back';
-    else
-      this.loginPromptText = 'Login';
-  }
-
-  updateRegisterPromptText(){
-    if(this.registerPromptText == 'Register')
-      this.registerPromptText = 'Back';
-    else
+    this.userService.addUser(firstName, lastName, email, password).subscribe(data => {
       this.registerPromptText = 'Register';
+      this.registerForm.reset();
+      this.router.navigate(['/login']);
+    });
   }
 
-  closeLoginForm(){
-    if(this.toggleLogin) {
-      this.toggleLogin = !this.toggleLogin;
-      this.loginPromptText = 'Login'
-    }
-      
-  }
-
-  closeRegisterForm(){
-    if(this.toggleRegister) {
+  toggleLoginForm() {
+    // flag controlling whether or not the form shows
+    this.toggleLogin = !this.toggleLogin;
+    // if the register button is open, close it
+    if (this.toggleRegister) {
       this.toggleRegister = !this.toggleRegister;
-      this.registerPromptText = 'Register'
     }
-      
+    // change the Login prompt to a Back prompt
+    // and vice versa
+    if (this.loginPromptText == 'Login')
+      this.loginPromptText = 'Back';
+    else {
+      this.loginPromptText = 'Login';
+      // reset the form values if going Back
+      this.loginForm.reset();
+    }
   }
 
-  resetPromptText(){
-    this.loginPromptText = 'Login';
-    this.registerPromptText = 'Register';
+  toggleRegisterForm() {
+    this.toggleRegister = !this.toggleRegister;
+    if (this.toggleLogin) {
+      this.toggleLogin = !this.toggleLogin;
+    }
+    if (this.registerPromptText == 'Register')
+      this.registerPromptText = 'Back';
+    else {
+      this.registerPromptText = 'Register';
+      this.registerForm.reset();
+    }
   }
 }

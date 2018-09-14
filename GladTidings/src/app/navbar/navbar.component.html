@@ -3,7 +3,7 @@
   <!-- Fixed navbar -->
   <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-primary justify-content-between">
     <a class="navbar-brand" href="#">GladTidings</a>
-    <button class="navbar-toggler" type="button" (click)=toggleNav() aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" (click)=toggleNavDropDown() aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="navbar-collapse" [ngClass]="{'collapse.show': toggleOn, 'collapse': !toggleOn}">
@@ -11,9 +11,9 @@
         <a class="nav-item nav-link" href="#" (click)="setPage(0); printCurr()" [ngClass]="{'active': currentPage===0}">Home <span class="sr-only">(current)</span></a>
         <a class="nav-item nav-link" (click)="setPage(1)" [ngClass]="{'active': currentPage===1}" routerLink='/blog'>Blog</a>
         <a class="nav-item nav-link" (click)="setPage(2)" [ngClass]="{'active': currentPage===2}" routerLink='/resources'>Resources</a>
-        <a class="nav-item nav-link" routerLink='/login' *ngIf="user == null" >Login</a>
+        <a class="nav-item nav-link" routerLink='/login' *ngIf="!toggleLogout">Login</a>
         <a class="nav-item nav-link" routerLink='/login'>Sign Up</a>
-        <a class="nav-item nav-link" (click)="logout()" *ngIf="user != null">Logout</a>
+        <a class="nav-item nav-link" (click)="logout()" *ngIf="toggleLogout">Logout</a>
       </div>
     </div>
   </nav>

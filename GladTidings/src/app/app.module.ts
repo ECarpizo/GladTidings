@@ -1,15 +1,6 @@
+/* Modules */
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
-/* Components */
-import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
-import { AppRoutingModule } from './/app-routing.module';
-import { HomeComponent } from './home/home.component';
-import { FooterComponent } from './footer/footer.component';
-import { NavbarComponent } from './navbar/navbar.component';
-
-/* Modules */
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -32,9 +23,23 @@ import {
 import { SlimLoadingBarModule } from 'ng2-slim-loading-bar';
 import { FormsModule } from '@angular/forms';
 
+/*Directives*/
+import { ScreenWidthDirective } from './directives/screen-width.directive';
+
+/* Components */
+import { AppComponent } from './app.component';
+import { LoginComponent } from './login/login.component';
+import { AppRoutingModule } from './/app-routing.module';
+import { HomeComponent } from './home/home.component';
+import { FooterComponent } from './footer/footer.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { BlogComponent } from './blog/blog.component';
+import { PostComponent } from './post/post.component';
+
 /* Services */
 import { UserService } from './services/user.service';
 import { BaseUrlService } from './services/base-url.service';
+import { UtilityService } from './services/utility.service';
 
 /* Code for importing new components to app.module:
 ng generate module app-routing --flat --module=app 
@@ -48,6 +53,9 @@ ng generate module app-routing --flat --module=app
     HomeComponent,
     FooterComponent,
     NavbarComponent,
+    PostComponent,
+    ScreenWidthDirective,
+    BlogComponent
   ],
   imports: [
     BrowserModule,
@@ -72,7 +80,7 @@ ng generate module app-routing --flat --module=app
     HttpClientModule,
     FormsModule
   ],
-  providers: [BaseUrlService, UserService],
+  providers: [BaseUrlService, UserService, UtilityService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

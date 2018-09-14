@@ -6,15 +6,7 @@ const options = {
   useNewUrlParser: true,
   reconnectTries: Number.MAX_VALUE,
   poolSize: 10
-}
-
-mongoose.connection.on('connected', function() {
-  // Hack the database back to the right one, because when using mongodb+srv as protocol.
-  if (mongoose.connection.client.s.url.startsWith('mongodb+srv')) {
-      mongoose.connection.db = mongoose.connection.client.db('GladTidings');
-  }
-  console.log('Connection to MongoDB established.')
-});
+};
 
 mongoose.connect(connection, options)
   .then(() => {
@@ -23,6 +15,14 @@ mongoose.connect(connection, options)
     err => {
       console.log('Unable to connect to DB: ' + err);
     });
+
+mongoose.connection.on('connected', function () {
+  // Hack the database back to the right one, because when using mongodb+srv as protocol.
+  if (mongoose.connection.client.s.url.startsWith('mongodb+srv')) {
+    mongoose.connection.db = mongoose.connection.client.db('GladTidings');
+  }
+  console.log('Connection to MongoDB established.')
+});
 
 module.exports = connection;
 // flag to check for existing DB connection
