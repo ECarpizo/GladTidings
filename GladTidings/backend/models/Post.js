@@ -6,6 +6,7 @@ const commentSchema = require('./Comment');
 
 const PostSchema = new Schema({
     title: String,
+    subtitle: String,
     author: String,
     created: {
         type: Date,

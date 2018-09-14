@@ -5,6 +5,7 @@ export interface Post {
     _id: string,
     _v: number,
     title: string,
+    subtitle: string,
     author: string,
     created,
     pictures: string[],

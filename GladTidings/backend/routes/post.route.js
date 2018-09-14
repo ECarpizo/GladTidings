@@ -4,7 +4,7 @@ const express = require('express'),
 
 const Post = require('../models/Post');
 
-// Create new comment
+// Create new Post
 router.route('./create').post((req, res) => {
   let post = new Post(req.body);
   post.save()
@@ -25,37 +25,38 @@ router.route('./create').post((req, res) => {
     });
 });
 
-// Get all comments
+// Get all Posts
 router.route('').get((req, res) => {
   Post.find((err, posts) => {
     if (err)
       res.json({
-        error: 'Unable to retrieve comments: ' + err
+        error: 'Unable to retrieve Posts: ' + err
       });
     else
       res.json(posts);
   });
 });
 
-// Get comment by ID
+// Get Post by ID
 router.route('/getById/:id').get((req, res) => {
     Post.findById(req.params.id, (err, post) => {
     if (!post)
       res.json({
-        error: 'Unable to retrieve comments: ' + err
+        error: 'Unable to retrieve Posts: ' + err
       });
     else
       res.json(post);
   });
 });
 
-// Update comment info
+// Update Post info
 router.route('/update/:id').put((req, res) => {
     Post.findById(req.params.id, (err, post) => {
     if (!post || err)
       return new Error('Could not load Post: ' + err);
     else {
         post.title = req.body.title;
+        post.subtitle = req.body.subtitle;
         post.author = req.body.author;
         post.pictures = req.body.picture;
         post.content = req.body.content;
