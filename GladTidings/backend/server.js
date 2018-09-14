@@ -20,7 +20,7 @@ app.use(bodyParser.json());
  Replace <Hostname> with your DB hostname
  Replace <DB name> with the DB name
 */
-const uri = 'mongodb+srv://<Username>:<Password>@<Hostname>.mongodb.net/<DB name>?retryWrites=true';
+const uri = '';
 const options = {
   useNewUrlParser: true,
   reconnectTries: Number.MAX_VALUE,
