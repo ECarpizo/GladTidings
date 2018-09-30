@@ -86,6 +86,7 @@ export class LoginComponent implements OnInit {
         this.userService.setCurrentUser(data);
         localStorage.setItem("userID", data._id);
         localStorage.setItem("userType", data.tier);
+        this.loginPromptText = 'Login'
         this.router.navigate(['/home']);
       }
     });

@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MatToolbarModule,
   MatFormFieldModule,
@@ -18,10 +18,13 @@ import {
   MatDividerModule,
   MatSnackBarModule,
   MatExpansionModule,
-  MatCheckboxModule
+  MatCheckboxModule,
+  MatSlideToggleModule,
+  MatProgressBarModule,
+  MatPaginatorModule
 } from '@angular/material';
 import { SlimLoadingBarModule } from 'ng2-slim-loading-bar';
-import { FormsModule } from '@angular/forms';
+
 
 /*Directives*/
 import { ScreenWidthDirective } from './directives/screen-width.directive';
@@ -37,9 +40,13 @@ import { BlogComponent } from './blog/blog.component';
 import { PostComponent } from './post/post.component';
 
 /* Services */
-import { UserService } from './services/user.service';
 import { BaseUrlService } from './services/base-url.service';
 import { UtilityService } from './services/utility.service';
+import { UserService } from './services/user.service';
+import { PostService } from './services/post.service';
+import { CommentService } from './services/comment.service';
+import { CategoryService } from './services/category.service';
+import { SettingsComponent } from './settings/settings.component';
 
 /* Code for importing new components to app.module:
 ng generate module app-routing --flat --module=app 
@@ -55,7 +62,8 @@ ng generate module app-routing --flat --module=app
     NavbarComponent,
     PostComponent,
     ScreenWidthDirective,
-    BlogComponent
+    BlogComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,
@@ -75,12 +83,22 @@ ng generate module app-routing --flat --module=app
     MatSnackBarModule,
     MatExpansionModule,
     MatCheckboxModule,
+    MatSlideToggleModule,
     CommonModule,
     SlimLoadingBarModule.forRoot(),
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    MatProgressBarModule,
+    MatPaginatorModule,
   ],
-  providers: [BaseUrlService, UserService, UtilityService],
+  providers: [
+    BaseUrlService, 
+    UserService, 
+    UtilityService, 
+    PostService, 
+    CommentService, 
+    CategoryService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

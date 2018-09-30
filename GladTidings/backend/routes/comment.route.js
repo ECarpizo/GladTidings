@@ -5,91 +5,128 @@ const express = require('express'),
 const Comment = require('../models/Comment');
 
 // Create new Comment
-router.route('./create').post((req, res) => {
+router.route('/create').post((req, res) => {
   let comment = new Comment(req.body);
   comment.save()
     .then(comment => {
       res.status(200).json(comment);
     })
     .catch(err => {
-      res.status(400).send({
-        "message": 'Account creation failed',
-        "error": err
-      });
-    })
-    .catch(err => {
-      res.status(500).send({
-        "message": 'Database error',
-        "error": err
+      res.status(500).json({
+        message: 'Comment creation failed',
+        error: err
       });
     });
 });
 
 // Get all Comments
 router.route('').get((req, res) => {
-  Comment.find((err, comments) => {
-    if (err)
-      res.json({
-        error: 'Unable to retrieve comments: ' + err
+  Comment
+    .find()
+    .populate('post', '_id')
+    .populate('postedBy', 'firstName lastName')
+    .populate('replies')
+    .exec()
+    .then(comments => {
+      res.status(200).json(comments);
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: 'Unable to retrieve comments',
+        error: err
       });
-    else
-      res.json(comments);
-  });
+    });
 });
 
 // Get Comment by ID
 router.route('/getById/:id').get((req, res) => {
-    Comment.findById(req.params.id, (err, comment) => {
-    if (!comment)
-      res.json({
-        error: 'Unable to retrieve comments: ' + err
+  Comment
+    .findById(req.params.id)
+    .populate('postedBy', 'firstName lastName')
+    .populate('post', '_id')
+    .populate('replies')
+    .exec()
+    .then(comment => {
+      res.status(200).json(comment);
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: 'Unable to retrieve comment: ',
+        error: err
       });
-    else
-      res.json(comment);
-  });
+    });
+});
+
+// Get Comments by user ID
+router.route('/getByUser/:id').get((req, res) => {
+  Comment
+    .find({
+      postedBy: req.params.id
+    })
+    .populate('postedBy', 'firstName lastName')
+    .populate('post', '_id')
+    .populate('replies')
+    .exec()
+    .then(comments => {
+      res.status(200).json(comments);
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: 'Unable to retrieve comments: ',
+        error: err
+      });
+    });
 });
 
 // Update Comment info
 router.route('/update/:id').put((req, res) => {
-    Comment.findById(req.params.id, (err, comment) => {
-    if (!comment || err)
-      return new Error('Could not load Comment: ' + err);
-    else {
-        comment.title = req.body.title;
-        comment.author = req.body.author;
-        comment.pictures = req.body.picture;
-        comment.content = req.body.content;
-        comment.comments = req.body.comments;
-        comment.categories = req.body.categories;
-        comment.views = req.body.views;
-
-        comment.save()
-        .then(comment => {
-          res.json('Comment updated!');
-        })
-        .catch(err => {
-          res.status(400).send('Comment failed to update');
-        })
-        .catch(err => {
-          res.status(500).send('Database error');
+  Comment
+    .update({
+      _id: req.params.id
+    }, req.body)
+    .then(doc => {
+      if (!doc)
+        return res.status(404).json({
+          message: 'Unable to update comment',
+          error: err
         });
-    }
-  });
+      return Comment
+        .findById(req.params.id)
+        .populate('postedBy')
+        .populate('post', '_id')
+        .populate('replies')
+        .exec()
+        .then(comment => {
+          res.status(200).json(comment);
+        });
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: 'Unable to update comment',
+        error: err,
+        body: req.body
+      });
+    });
 });
 
 // Delete (never have to delete comments. Just disable active status to "false")
 router.route('/delete/:id').get(function (req, res) {
-    Comment.findByIdAndRemove({
-    _id: req.params.id
-  }, (err, comment) => {
-    if (err)
-      res.json(err);
-    else
+  Comment
+    .findByIdAndRemove({
+      _id: req.params.id
+    })
+    .then(comment => {
       res.json({
         comment: comment,
         message: "Comment was removed"
       });
-  });
+    })
+    .catch(err => {
+      res.status(404).send({
+        message: 'Failed: The comment does not exist.',
+        error: err
+      });
+    });
 });
 
 module.exports = router;

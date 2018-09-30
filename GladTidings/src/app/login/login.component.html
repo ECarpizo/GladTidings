@@ -47,7 +47,7 @@
     <br>
     <button *ngIf="!toggleLogin" (click)="toggleRegisterForm()" id="registerButton" class="btn btn-success">{{registerPromptText}}</button>
     <form *ngIf="toggleRegister" [formGroup]="registerForm" action="login"
-      method="post" class="animated fadeIn delay-.2s ">
+      method="post" class="animated fadeIn delay-.2s">
       <mat-form-field>
         <input matInput formControlName='firstName' #firstName type="text">
         <mat-placeholder class="placeholder" *ngIf="getRegisterFirstName().value == '' || getRegisterFirstName().value == null">First Name</mat-placeholder>

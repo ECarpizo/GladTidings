@@ -13,99 +13,141 @@ router.route('/create').post((req, res) => {
       res.status(200).json(user);
     })
     .catch(err => {
-      res.status(400).send({
-        "message": 'Account creation failed',
-        "error": err
-      });
-    })
-    .catch(err => {
-      res.status(500).send({
-        "message": 'Database error',
-        "error": err
+      res.status(500).json({
+        message: 'Account creation failed',
+        error: err
       });
     });
 });
 
 // Get all Users
 router.route('').get((req, res) => {
-  User.find((err, users) => {
-    if (err)
-      res.json({
-        error: 'Unable to retrieve users: ' + err
+  User
+    .find()
+    .select("_id email password firstName lastName tier active comments posts created")
+    .populate('posts')
+    .populate('comments')
+    .exec()
+    .then(users => {
+      res.status(200).json({
+        users: users
       });
-    else
-      res.json(users);
-  });
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: 'Unable to retrieve users',
+        error: err
+      });
+    });
 });
 
 // Get User by ID
 router.route('/getById/:id').get((req, res) => {
-  User.findById(req.params.id, (err, user) => {
-    if (!user)
-      res.json({
-        error: 'Unable to retrieve users: ' + err
+  User
+    .findById(req.params.id)
+    .populate('posts')
+    .populate('comments')
+    .exec()
+    .then(user => {
+      res.status(200).json(user);
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: 'Unable to retrieve user: ',
+        error: err
       });
-    else
-      res.json(user);
-  });
+    });
 });
 
 // Get User by email and password
 router.route('/getByCredentials').post((req, res) => {
-  User.findOne({
-    email: req.body.email,
-    password: req.body.password
-  }, (err, user) => {
-    if (err || user === null)
-      res.json({
-        message: "User does not exist",
+  User
+    .findOne({
+      email: req.body.email,
+      password: req.body.password
+    })
+    .populate('posts')
+    .populate('comments')
+    .exec()
+    .then(user => {
+      res.status(200).json(user);
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: 'Unable to retrieve users: ',
         error: err
       });
-    else
-      res.json(user);
-  });
+    });
+});
+
+// Get Users by email, firstname and lastname
+router.route('/getByPost').post((req, res) => {
+  User
+    .find({
+      email: {$in: req.body.emails},
+      firstName: {$in: req.body.firstNames},
+      lastName: {$in: req.body.lastNames}
+    })
+    .populate('posts')
+    .populate('comments')
+    .exec()
+    .then(user => {
+      res.status(200).json(user);
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: 'Unable to retrieve users: ',
+        error: err
+      });
+    });
 });
 
 // Update User info
 router.route('/update/:id').put((req, res) => {
-  User.findById(req.params.id, (err, user) => {
-    if (!user || err)
-      return new Error('Could not load User: ' + err);
-    else {
-      user.firstName = req.body.firstName;
-      user.lastName = req.body.lastName;
-      user.email = req.body.email;
-      user.password = req.body.password;
-      user.tier = req.body.tier;
-      user.active = req.body.active;
-
-      user.save()
-        .then(user => {
-          res.json('Account updated!');
-        })
-        .catch(err => {
-          res.status(400).send('Account failed to update');
-        })
-        .catch(err => {
-          res.status(500).send('Database error');
+  User
+    .update({
+      _id: req.params.id
+    }, req.body)
+    .then(doc => {
+      if (!doc)
+        return res.status(404).json({
+          message: 'Unable to update user',
+          error: err
         });
-    }
-  });
+      return User.findById(req.params.id)
+        .populate('posts')
+        .populate('comments')
+        .exec()
+        .then(user => {
+          res.status(200).json(user);
+        });
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: 'Unable to update user',
+        error: err,
+        body: req.body
+      });
+    });
 });
 
 // Delete (never have to delete users. Just disable active status to "false")
 router.route('/delete/:id').get(function (req, res) {
   User.findByIdAndRemove({
-    _id: req.params.id
-  }, (err, user) => {
-    if (err)
-      res.json(err);
-    else
-      res.json({
+      _id: req.params.id
+    })
+    .then(user => {
+      res.status(200).json({
         user: user,
         message: "User was removed"
       });
-  });
+    })
+    .catch(err => {
+      res.status(404).send({
+        message: 'Failed: The user does not exist.',
+        error: err
+      });
+    });
 });
 
 module.exports = router;

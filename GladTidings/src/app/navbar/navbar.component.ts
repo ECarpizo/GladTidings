@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output} from '@angular/core';
+import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { User } from '../classes/User';
 
@@ -9,10 +10,11 @@ import { User } from '../classes/User';
 })
 export class NavbarComponent {
 
-  toggleOn = false;
+  toggleDropDown = false;
   toggleLogout = false;
   currentPage = 0;
-  constructor(private userService: UserService) {
+  showSettings = false;
+  constructor(private userService: UserService, private router: Router) {
     if(this.userService.getCurrentUser() == null && localStorage.getItem('userID') == null)
       this.toggleLogout = false;
     else if(this.userService.getCurrentUser() == null && localStorage.getItem('userID') != null) {
@@ -24,13 +26,15 @@ export class NavbarComponent {
     }
     else
       this.toggleLogout = true;
+    if(userService.getCurrentUser() != null && userService.getCurrentUser().tier == "Admin")
+      this.showSettings = true;
   }
 
   /* At a certain screen width, the navbar will collapse.
   Clicking the toggle-navbar icon will trigger this method.
   */
  toggleNavDropDown(){
-    this.toggleOn = !this.toggleOn;
+    this.toggleDropDown = !this.toggleDropDown;
   }
 
   /* Clicking a link will update the variable 'currentPage' to
@@ -45,8 +49,10 @@ export class NavbarComponent {
     localStorage.removeItem('userID');
     localStorage.removeItem('userType');
     this.userService.setCurrentUser = null;
-    this.toggleOn=false;
+    this.toggleDropDown=false;
     window.location.reload(true);
     this.toggleLogout = false;
+    this.showSettings = false;
+    this.router.navigate(['/home']);
   }
 }

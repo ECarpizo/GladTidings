@@ -5,7 +5,7 @@ const express = require('express'),
 const Category = require('../models/Category');
 
 // Create new Category
-router.route('./create').post((req, res) => {
+router.route('/create').post((req, res) => {
   let category = new Category(req.body);
   category.save()
     .then(category => {
@@ -13,14 +13,14 @@ router.route('./create').post((req, res) => {
     })
     .catch(err => {
       res.status(400).send({
-        "message": 'Account creation failed',
-        "error": err
+        message: 'Category creation failed',
+        error: err
       });
     })
     .catch(err => {
       res.status(500).send({
-        "message": 'Database error',
-        "error": err
+        message: 'Database error',
+        error: err
       });
     });
 });
@@ -49,6 +49,18 @@ router.route('/getById/:id').get((req, res) => {
   });
 });
 
+// Get Category by ID
+router.route('/getByName/:name').get((req, res) => {
+  Category.findOne(req.params.name, (err, category) => {
+  if (!category)
+    res.json({
+      error: 'Unable to retrieve category: ' + err
+    });
+  else
+    res.json(category);
+});
+});
+
 // Update Category info
 router.route('/update/:id').put((req, res) => {
     Category.findById(req.params.id, (err, category) => {
@@ -56,7 +68,7 @@ router.route('/update/:id').put((req, res) => {
       return new Error('Could not load category: ' + err);
     else {
         category.name = req.body.name;
-
+        category.active = req.body.active;
         category.save()
         .then(category => {
           res.json('Category updated!');

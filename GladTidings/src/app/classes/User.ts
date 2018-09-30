@@ -1,3 +1,6 @@
+import { Comment } from './Comment';
+import { Post } from './Post';
+
 export interface User {
     _id: string;
     _v: number;
@@ -8,4 +11,6 @@ export interface User {
     tier: string;
     active: boolean;
     created: Date;
+    comments: number[];
+    posts: number[];
 }

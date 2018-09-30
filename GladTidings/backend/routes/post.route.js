@@ -5,92 +5,131 @@ const express = require('express'),
 const Post = require('../models/Post');
 
 // Create new Post
-router.route('./create').post((req, res) => {
+router.route('/create').post((req, res) => {
+  console.log(req.body);
   let post = new Post(req.body);
-  post.save()
+  post
+    .save()
     .then(post => {
       res.status(200).json(post);
     })
     .catch(err => {
-      res.status(400).send({
-        "message": 'Account creation failed',
-        "error": err
-      });
-    })
-    .catch(err => {
-      res.status(500).send({
-        "message": 'Database error',
-        "error": err
+      res.status(500).json({
+        message: 'Post creation failed',
+        error: err
       });
     });
 });
 
 // Get all Posts
 router.route('').get((req, res) => {
-  Post.find((err, posts) => {
-    if (err)
-      res.json({
-        error: 'Unable to retrieve Posts: ' + err
+  Post
+    .find()
+    .populate('authors', 'firstName lastName')
+    .populate('comments')
+    .populate('categories')
+    .exec()
+    .then(posts => {
+      res.status(200).json({
+        posts: posts
       });
-    else
-      res.json(posts);
-  });
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: 'Unable to retrieve posts',
+        error: err
+      });
+    });
 });
 
 // Get Post by ID
 router.route('/getById/:id').get((req, res) => {
-    Post.findById(req.params.id, (err, post) => {
-    if (!post)
-      res.json({
-        error: 'Unable to retrieve Posts: ' + err
+  Post
+    .findById(req.params.id)
+    .populate('authors', 'firstName lastName')
+    .populate('comments')
+    .populate('categories')
+    .exec()
+    .then(post => {
+      res.status(200).json(post);
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: 'Unable to retrieve post: ',
+        error: err
       });
-    else
-      res.json(post);
-  });
+    });
+});
+
+// Get Posts by User
+router.route('/getByAuthors/:id').get((req, res) => {
+  Post
+    .find({
+      authors: req.params.id
+    })
+    .populate('postedBy')
+    .populate('post', '_id')
+    .populate('replies')
+    .exec()
+    .then(posts => {
+      res.status(200).json(posts);
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: 'Unable to retrieve posts: ',
+        error: err
+      });
+    });
 });
 
 // Update Post info
 router.route('/update/:id').put((req, res) => {
-    Post.findById(req.params.id, (err, post) => {
-    if (!post || err)
-      return new Error('Could not load Post: ' + err);
-    else {
-        post.title = req.body.title;
-        post.subtitle = req.body.subtitle;
-        post.author = req.body.author;
-        post.pictures = req.body.picture;
-        post.content = req.body.content;
-        post.comments = req.body.comments;
-        post.categories = req.body.categories;
-        post.views = req.body.views;
-
-        post.save()
-        .then(post => {
-          res.json('Post updated!');
-        })
-        .catch(err => {
-          res.status(400).send('Post failed to update');
-        })
-        .catch(err => {
-          res.status(500).send('Database error');
+  Post
+    .update({
+      _id: req.params.id
+    }, req.body)
+    .then(doc => {
+      if (!doc)
+        return res.status(404).json({
+          message: 'Unable to update post',
+          error: err
         });
-    }
-  });
+      return Post
+        .findById(req.params.id)
+        .populate('authors')
+        .populate('comments')
+        .populate('categories')
+        .exec()
+        .then(post => {
+          res.status(200).json(post);
+        });
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: 'Unable to update post',
+        error: err,
+        body: req.body
+      });
+    });
 });
 
 // Delete (never have to delete posts. Just disable active status to "false")
 router.route('/delete/:id').get(function (req, res) {
-    Post.findByIdAndRemove({
-    _id: req.params.id
-  }, (err, post) => {
-    if (err)
-      res.json(err);
-    else
+  Post.findByIdAndRemove({
+      _id: req.params.id
+    })
+    .then(post => {
       res.json({
         post: post,
         message: "Post was removed"
       });
-  });
+    })
+    .catch(err => {
+      res.status(404).send({
+        message: 'Failed: The post does not exist.',
+        error: err
+      });
+    });
 });
 
 module.exports = router;

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import { User } from '../classes/User';
 import { Observable } from 'rxjs/Observable';
 
@@ -17,7 +16,7 @@ export class UserService {
   private users: User[];
   private currentUser: User = null;
 
-  constructor(private http: HttpClient, private router: Router, private baseUrlService: BaseUrlService) {
+  constructor(private http: HttpClient, private baseUrlService: BaseUrlService) {
   }
 
   getCurrentUser(): User {
@@ -29,10 +28,10 @@ export class UserService {
   getUsersArray(): User[] {
     return this.users;
   }
-  public getCachedId(): string {
+  getCachedId(): string {
     return localStorage.getItem('userID');
   }
-  public getCachedUserType(): string {
+  getCachedUserType(): string {
     return localStorage.getItem('userType');
   }
   addUser(firstName, lastName, email, password): Observable<User> {
@@ -54,6 +53,14 @@ export class UserService {
     }
     return this.http.post<User>(this.baseUrlService.getBaseURL() + '/users/getByCredentials', values);
   }
+  getUserByPost(emails: string, firstNames: string, lastNames: string): Observable<User> {
+    const values = {
+      emails: emails,
+      firstNames: firstNames,
+      lastNames: lastNames
+    }
+    return this.http.post<User>(this.baseUrlService.getBaseURL() + '/users/getByCredentials', values);
+  }
   getUserById(id): Observable<User> {
     return this.http.get<User>(this.baseUrlService.getBaseURL() + '/users/getById/' + id);
   }
@@ -64,26 +71,34 @@ export class UserService {
       'email': user.email,
       'password': user.password,
       'tier': user.tier,
-      'active': user.active
+      'active': user.active,
+      'comments': user.comments,
+      'posts': user.posts
     }
     this.http.put(this.baseUrlService.getBaseURL() + '/users/update/' + user._id, userInfo);
     return this.getUserById(user._id);
   }
-  deleteUser(user: User): boolean {
-    let userInfo = {
-      'firstName': user.firstName,
-      'lastName': user.lastName,
-      'email': user.email,
-      'password': user.password,
-      'tier': user.tier,
-      'active': 'false'
-    }
-    this.http.put(this.baseUrlService.getBaseURL() + '/update/' + user._id, userInfo);
+  deleteUser(user: User, setting: boolean): boolean {
+    let userInfo = user;
+    userInfo.active = setting;
+    this.http.put(this.baseUrlService.getBaseURL() + '/users/update/' + user._id, userInfo);
     let flag: User;
     this.getUserById(user._id).subscribe(data => flag = data);
-    if (flag.active.toString() == "true")
-      return false;
-    else
-      return true;
+    // if you want to activate the user
+    if (setting) {
+      // return true if the user is active
+      if (flag.active)
+        return true;
+      else
+        return false;
+    }
+    // otherwise you want to deactivate the user
+    else {
+      // return true if the user is inactive
+      if (!flag.active)
+        return true;
+      else
+        return false;
+    }
   }
 }

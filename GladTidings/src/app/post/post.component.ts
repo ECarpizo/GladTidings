@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Post } from '../classes/Post';
 import { Comment } from '../classes/Comment';
 
@@ -9,7 +9,11 @@ import { Comment } from '../classes/Comment';
 })
 export class PostComponent implements OnInit {
 
-  constructor() { }
+  @Input() posts: Post[];
+  constructor() { 
+    // console.log("Post compoment posts': ");
+    // console.log(this.posts);
+  }
 
   ngOnInit() {
   }

@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let CategorySchema = new Schema({
-    name: String
+    name: String,
+    category: Boolean
 });
-module.exports = mongoose.model('Category', CategorySchema);
+module.exports = mongoose.model('Categories', CategorySchema);

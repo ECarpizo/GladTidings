@@ -1,2 +1,99 @@
 <app-navbar></app-navbar>
-<app-post></app-post>
+<!-- <app-post [posts]="posts"></app-post> -->
+<!-- *ngFor='let post of posts; let i = index'  -->
+<!-- <app-post></app-post> -->
+<!-- <div class="post" *ngFor='let post of posts; let i = index'>
+  <div class="title">
+    {{post.title}}. {{post.subtitle}}
+  </div>
+  <div class="picture" *ngFor='let picture of post.pictures; let j = index'>
+    {{picture}}
+  </div>
+  <div class="content">
+    {{post.content}}
+  </div>
+  <div class="author" *ngFor='let author of post.authors; let k = index'>
+    {{author.firstName}} {{author.lastName}}
+  </div>
+  <div class="createdDate">
+    {{post.created}}
+  </div>
+  <div class="category" *ngFor='let category of post.categories; let l = index'>
+    {{category}}
+  </div>
+  <div class="comments" *ngFor='let comment of post.comments; let m = index'>
+    {{comment}}
+  </div>
+</div> -->
+<mat-paginator [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page)="pageEvent = $event">
+</mat-paginator>
+<div id="spacer"></div>
+<div class="post layout-style-1">
+  <h2 class="title featurette-item">Love, not just in word.
+    <div class="text-muted">But in deed.</div>
+  </h2>
+  <div class="picture-container">
+    <img src="../../assets//home/featurette1.jpg" alt="Students hugging, smiling, and laughing" class="picture img-fluid">
+  </div>
+  <mat-card-content>
+    <p class="text">
+      "What good is it, my brothers, if someone says he has faith but does not have works? Can that faith save him? If
+      a brother or sister is poorly clothed and lacking in daily food, and one of you says to them, “Go in peace, be
+      warmed and filled,” without giving them the things needed for the body, what good is that? So also faith by
+      itself, if it does not have works, is dead."
+    </p>
+  </mat-card-content>
+  <mat-card-actions class="post-buttons">
+    <button mat-stroked-button color="primary" class="btn">POST &raquo;</button>
+    <button mat-stroked-button color="primary" class="btn">PREVIEW &raquo;</button>
+    <button mat-stroked-button color="primary" class="btn">EDIT &raquo;</button>
+  </mat-card-actions>
+</div>
+<mat-divider></mat-divider>
+<div class="post layout-style-2">
+  <h2 class="title featurette-item">Receiving even the littlest ones.
+    <div class="text-muted">For theirs is the kingdom.</div>
+  </h2>
+  <div class="picture-container">
+    <img src="../../assets//home/featurette2.jpg" alt="Children holding up their handrawn tree artwork" class="picture img-fluid">
+  </div>
+  <mat-card-content>
+    <p class="text">
+      "At that time the disciples came to Jesus, saying, “Who is the greatest in the kingdom of heaven?” And calling to
+      him a child, he put him in the midst of them and said, “Truly, I say to you, unless you turn and become like
+      children, you will never enter the kingdom of heaven. Whoever humbles himself like this child is the greatest in
+      the kingdom of heaven."
+    </p>
+  </mat-card-content>
+  <mat-card-actions class="post-buttons">
+    <button mat-stroked-button color="primary" class="btn">POST &raquo;</button>
+    <button mat-stroked-button color="primary" class="btn">PREVIEW &raquo;</button>
+    <button mat-stroked-button color="primary" class="btn">EDIT &raquo;</button>
+  </mat-card-actions>
+</div>
+<mat-divider></mat-divider>
+<div class="post layout-style-1">
+  <h2 class="title featurette-item">Children of God
+
+    <div class="text-muted">are ALWAYS received.</div>
+  </h2>
+  <div class="picture-container">
+    <img src="../../assets//home/featurette3.jpg" alt="Toddler students sitting at their desks, coloring" class="picture img-fluid">
+  </div>
+  <mat-card-content>
+    <p class="text">
+      “Whoever receives one such child in my name receives me, but whoever causes one of these little ones who believe
+      in me to sin, it would be better for him to have a great millstone fastened around his neck and to be drowned in
+      the depth of the sea."
+    </p>
+  </mat-card-content>
+  <mat-card-actions class="post-buttons">
+    <button mat-stroked-button color="primary" class="btn">POST &raquo;</button>
+    <button mat-stroked-button color="primary" class="btn">PREVIEW &raquo;</button>
+    <button mat-stroked-button color="primary" class="btn">EDIT &raquo;</button>
+  </mat-card-actions>
+</div>
+<br>
+<app-footer></app-footer>
+
+<!-- <div>{{posts | json}}</div> -->
