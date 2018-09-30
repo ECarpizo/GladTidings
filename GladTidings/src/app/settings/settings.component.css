@@ -1,0 +1,12 @@
+.form, .preview{
+    margin: 2.5%;
+    padding: 5%;
+}
+.formContent{
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 1fr;
+}
+.btn{
+   max-width: 150px;
+}

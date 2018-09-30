@@ -1,3 +1,6 @@
+header{
+    margin-bottom: 56px !important;
+}
 .navbar-brand{
     margin-left: 10%;
 }
@@ -6,6 +9,9 @@
     margin-right: 10%;
 }
 
+.nav-item{
+    cursor: pointer;
+}
 @media(max-width:768px){
     .navbar-brand{
         margin-left: 0px;

@@ -1,0 +1,72 @@
+<app-navbar></app-navbar>
+<div class="form">
+  <form [formGroup]="postForm" (ngSubmit)="createPost()">
+    <mat-card class="formContent">
+      <mat-card-title>Create Post</mat-card-title>
+      <mat-form-field>
+        <input matInput formControlName='title' type="text" placeholder="Title">
+      </mat-form-field>
+      <mat-divider></mat-divider>
+      <mat-form-field>
+        <input matInput formControlName='subtitle' type="text" placeholder="Subtitle">
+      </mat-form-field>
+      <mat-divider></mat-divider>
+      <div formArrayName="authors">
+        <h3>Authors</h3>
+        <button [disabled]="!authors.valid" mat-raised-button color="primary" (click)="addAuthor()" class="btn">Add
+          Author</button>
+        <div *ngFor="let author of authors.controls; let i=index" [formGroupName]="i" class="formContent">
+          <br>
+          <mat-form-field>
+            <input matInput formControlName='firstName' type="text" placeholder="First Name">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput formControlName='lastName' type="text" placeholder="Last Name">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput formControlName='email' type="email" placeholder="Email">
+          </mat-form-field>
+          <button *ngIf="authors.length > 1" mat-raised-button color="warn" (click)="deleteAuthor(i)" class="btn">Remove
+            Author</button>
+          <mat-divider></mat-divider>
+        </div>
+      </div>
+      <br>
+      <h3>Post Content</h3>
+      <mat-form-field>
+        <!-- <textarea matInput formControlname='content' placeholder="Your articles content..."></textarea> -->
+        <textarea matInput formControlName='articleContent' type="text" placeholder="Your articles content..."></textarea>
+      </mat-form-field>
+      <mat-divider></mat-divider>
+      <br>
+      <div formArrayName="categories">
+        <h3>Categories</h3>
+        <button [disabled]="categories.pristine || categories.untouched" mat-raised-button color="primary" (click)="addCategory()"
+          class="btn">Add Category</button>
+        <div *ngFor="let category of categories.controls; let j=index" [formGroupName]="j" class="formContent">
+          <br>
+          <mat-form-field>
+            <input matInput formControlName='name' type="text" placeholder="Category Name">
+          </mat-form-field>
+          <button mat-raised-button color="warn" (click)="deleteCategory(j)" class="btn">Remove Category</button>
+          <mat-divider></mat-divider>
+        </div>
+      </div>
+      <br>
+      <mat-slide-toggle color="primary" (click)="togglePublish()">Publish Post</mat-slide-toggle>
+      <mat-divider></mat-divider>
+      <br>
+      <mat-card class="formContent">
+        <button [disabled]="postForm.invalid" mat-raised-button color="primary">Publish Post</button>
+      </mat-card>
+    </mat-card>
+  </form>
+</div>
+<div class="preview">
+  <p>Current Form</p>
+  <p>Title: {{postForm.value.title | json}}</p>
+  <p>Subtitle: {{postForm.value.subtitle | json}}</p>
+  <p>Authors: {{postForm.value.authors | json}}</p>
+  <p>Content: {{postForm.value.articleContent | json}}</p>
+  <p>Categories: {{postForm.value.categories | json}}</p>
+</div>
