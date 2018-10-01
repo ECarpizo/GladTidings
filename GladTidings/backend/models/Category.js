@@ -4,6 +4,6 @@ const Schema = mongoose.Schema;
 
 let CategorySchema = new Schema({
     name: String,
-    category: Boolean
+    active: Boolean
 });
 module.exports = mongoose.model('Categories', CategorySchema);

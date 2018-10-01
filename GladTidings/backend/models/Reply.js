@@ -2,15 +2,14 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-let CommentSchema = new Schema({
-  title: String,
+let ReplySchema = new Schema({
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Users'
   },
-  post: {
+  replyTo: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Posts'
+    ref: 'Comments'
   },
   comment: String,
   created: {
@@ -18,4 +17,4 @@ let CommentSchema = new Schema({
     default: Date.now
   }
 });
-module.exports = mongoose.model('Comments', CommentSchema);
+module.exports = mongoose.model('Replies', ReplySchema);

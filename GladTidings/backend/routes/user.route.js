@@ -24,9 +24,7 @@ router.route('/create').post((req, res) => {
 router.route('').get((req, res) => {
   User
     .find()
-    .select("_id email password firstName lastName tier active comments posts created")
-    .populate('posts')
-    .populate('comments')
+    .select("_id email password firstName lastName tier active created")
     .exec()
     .then(users => {
       res.status(200).json({
@@ -45,8 +43,6 @@ router.route('').get((req, res) => {
 router.route('/getById/:id').get((req, res) => {
   User
     .findById(req.params.id)
-    .populate('posts')
-    .populate('comments')
     .exec()
     .then(user => {
       res.status(200).json(user);
@@ -66,30 +62,6 @@ router.route('/getByCredentials').post((req, res) => {
       email: req.body.email,
       password: req.body.password
     })
-    .populate('posts')
-    .populate('comments')
-    .exec()
-    .then(user => {
-      res.status(200).json(user);
-    })
-    .catch(err => {
-      res.status(500).json({
-        message: 'Unable to retrieve users: ',
-        error: err
-      });
-    });
-});
-
-// Get Users by email, firstname and lastname
-router.route('/getByPost').post((req, res) => {
-  User
-    .find({
-      email: {$in: req.body.emails},
-      firstName: {$in: req.body.firstNames},
-      lastName: {$in: req.body.lastNames}
-    })
-    .populate('posts')
-    .populate('comments')
     .exec()
     .then(user => {
       res.status(200).json(user);
@@ -115,8 +87,6 @@ router.route('/update/:id').put((req, res) => {
           error: err
         });
       return User.findById(req.params.id)
-        .populate('posts')
-        .populate('comments')
         .exec()
         .then(user => {
           res.status(200).json(user);

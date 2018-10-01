@@ -49,7 +49,7 @@ router.route('/getById/:id').get((req, res) => {
   });
 });
 
-// Get Category by ID
+// Get Category by name
 router.route('/getByName/:name').get((req, res) => {
   Category.findOne(req.params.name, (err, category) => {
   if (!category)
@@ -71,7 +71,10 @@ router.route('/update/:id').put((req, res) => {
         category.active = req.body.active;
         category.save()
         .then(category => {
-          res.json('Category updated!');
+          res.json({
+            message: 'Category updated!',
+            category: category
+          });
         })
         .catch(err => {
           res.status(400).send('Category failed to update');

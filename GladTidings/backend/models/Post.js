@@ -12,22 +12,11 @@ const PostSchema = new Schema({
     }],
     default: []
   },
-  created: {
-    type: Date,
-    default: Date.now
-  },
-  pictures: {
-    type: [String],
-    default: []
-  },
+  // pictures: {
+  //   type: [String],
+  //   default: []
+  // },
   content: String,
-  comments: {
-    type: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Comments'
-    }],
-    default: []
-  },
   categories: {
     type: [{
       type: mongoose.Schema.Types.ObjectId,
@@ -42,6 +31,10 @@ const PostSchema = new Schema({
   active: {
     type: Boolean,
     default: false
+  },
+  created: {
+    type: Date,
+    default: Date.now
   }
 });
 module.exports = mongoose.model('Posts', PostSchema);

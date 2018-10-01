@@ -25,8 +25,7 @@ router.route('/create').post((req, res) => {
 router.route('').get((req, res) => {
   Post
     .find()
-    .populate('authors', 'firstName lastName')
-    .populate('comments')
+    .populate('authors', '_id firstName lastName')
     .populate('categories')
     .exec()
     .then(posts => {
@@ -46,8 +45,7 @@ router.route('').get((req, res) => {
 router.route('/getById/:id').get((req, res) => {
   Post
     .findById(req.params.id)
-    .populate('authors', 'firstName lastName')
-    .populate('comments')
+    .populate('authors', '_id firstName lastName')
     .populate('categories')
     .exec()
     .then(post => {
@@ -67,9 +65,8 @@ router.route('/getByAuthors/:id').get((req, res) => {
     .find({
       authors: req.params.id
     })
-    .populate('postedBy')
-    .populate('post', '_id')
-    .populate('replies')
+    .populate('author', '_id firstName lastName')
+    .populate('categories')
     .exec()
     .then(posts => {
       res.status(200).json(posts);
@@ -96,8 +93,7 @@ router.route('/update/:id').put((req, res) => {
         });
       return Post
         .findById(req.params.id)
-        .populate('authors')
-        .populate('comments')
+        .populate('authors', '_id firstName lastName')
         .populate('categories')
         .exec()
         .then(post => {
