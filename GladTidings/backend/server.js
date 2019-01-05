@@ -28,20 +28,22 @@ const options = {
 };
 mongoose.connect(uri, options);
 
-const connection = mongoose.connection;
-connection.once('open', () => {
-    console.log('MongoDB database connection established successfully!');
-});
+// const connection = mongoose.connection;
+// connection.once('open', () => {
+//     console.log('MongoDB database connection established successfully!');
+// });
 
 
 // API routes
 const userRoutes = require('./routes/user.route');
 const postRoutes = require('./routes/post.route');
 const commentRoutes = require('./routes/comment.route');
+const replyRoutes = require('./routes/reply.route');
 const categoryRoutes = require('./routes/category.route');
 app.use('/users', userRoutes);
 app.use('/posts', postRoutes);
 app.use('/comments', commentRoutes);
+app.use('/replies', replyRoutes);
 app.use('/categories', categoryRoutes);
 
 // Node server connection

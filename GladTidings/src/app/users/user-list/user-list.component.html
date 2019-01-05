@@ -1,0 +1,98 @@
+<div class="search-bar-div">
+  <button mat-raised-button (click)="create()" class="create" class="create-btn">
+    <mat-icon>add</mat-icon>Create
+  </button>
+  <mat-form-field class="search-bar-form-field" floatLabel="never" id="search-bar">
+    <input matInput [(ngModel)]="searchInput" placeholder="Search" autocomplete="off" (keyup)="search()" class="spacer">
+    <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="searchInput" (click)="onSearchClear()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+<div class="mat-elevation-z8">
+  <!-- The source of data for this table is our ts variable userDataSource -->
+  <mat-table  [dataSource]="userDataSource" matSort matSortActive="created" matSortDirection="desc" matSortDisableClear>
+    <!-- matColumnDef corresponds to each column.
+      Each column is mapped to an array element from tableColumns -->
+      <ng-container matColumnDef="firstName">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>First Name</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.firstName | titlecase}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="lastName">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.lastName | titlecase}}</mat-cell>
+      </ng-container>
+
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.email}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="password">
+      <mat-header-cell *matHeaderCellDef>Password
+        <mat-icon matSuffix (click)="hidePassword = !hidePassword" class="passwordVisibilityIcon" class="left-margin">{{hidePassword
+            ?
+            'visibility_off' : 'visibility'}}</mat-icon>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+          <input value="{{element.password}}" matInput disabled [type]="hidePassword ? 'password' : 'text'" class="password-font-color">
+      </mat-cell>
+      <!-- <mat-header-cell *matHeaderCellDef>Password</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.password}}</mat-cell> -->
+    </ng-container>
+    <ng-container matColumnDef="tier">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Privilege</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.tier}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="active">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Active</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.active.toString() | titlecase}}</mat-cell>
+      <!-- <mat-cell *matCellDef="let element">{{element.active == true ? 'Activated' : 'Deactivated'}}</mat-cell> -->
+    </ng-container>
+    <ng-container matColumnDef="created">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Date Created</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.created | date:'dd-LLL-yyyy'}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <button mat-icon-button (click)="edit(row)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button>
+          <mat-icon aria-label="x icon-button" (click)="toggleUserActivation(row._id, row.active)" [ngClass]="{'deactivate': row.active, 'activate': !row.active}">{{row.active
+            ? 'toggle_on' : 'toggle_off'}}</mat-icon>
+        </button>
+        <button mat-icon-button color="warn">
+          <mat-icon aria-label="x icon-button" (click)="deleteUser(row)">delete_outline</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+    <!-- The value of colspan = tableColumns.length+1.
+            Is equal to the number of columns you have
+            plus 2 for the two buttons.
+            If 'name' is your only column, colspan="3" -->
+    <ng-container matColumnDef="loadingMsg">
+      <mat-footer-cell *matFooterCellDef>
+        Loading user data...
+      </mat-footer-cell>
+    </ng-container>
+    <ng-container matColumnDef="emptyDatabaseTable">
+      <mat-footer-cell *matFooterCellDef>
+        There are no existing users. Create some users
+      </mat-footer-cell>
+    </ng-container>
+    <!-- The header row's column definitions come from the tableColumns array -->
+    <mat-header-row *matHeaderRowDef="tableColumns"></mat-header-row>
+    <!-- Characteristics of what would be table-body are applied via matRowDef,
+          'row' corresponds to the content,
+          and table headers come from the tableColumns array -->
+    <mat-row *matRowDef="let row; columns: tableColumns;"></mat-row>
+    <!-- When values are retrieved from the database
+          we do not want to show an empty table.
+          When userDataSource is empty, display a loading prompt -->
+    <mat-footer-row *matFooterRowDef="['loadingMsg']" [ngClass]="{'hide':userDataSource!=null}"></mat-footer-row>
+    <!-- If there is no data in the table, notify the user -->
+    <mat-footer-row *matFooterRowDef="['emptyDatabaseTable']" [ngClass]="{'hide':!(userDataSource!=null && userDataSource.data.length==0)}"></mat-footer-row>
+  </mat-table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 50, 100]" [pageSize]="25" showFirstLastButtons></mat-paginator>
+</div>

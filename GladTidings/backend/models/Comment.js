@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 let CommentSchema = new Schema({
   title: String,
-  postedBy: {
+  author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Users'
   },
@@ -12,17 +12,10 @@ let CommentSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Posts'
   },
+  comment: String,
   created: {
     type: Date,
     default: Date.now
-  },
-  comment: String,
-  replies: {
-    type: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Comments'
-    }],
-    default: []
   }
 });
 module.exports = mongoose.model('Comments', CommentSchema);

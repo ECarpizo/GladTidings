@@ -51,21 +51,32 @@ h1 {
   text-align: center;
   font-size: 3rem;
   cursor: pointer;
+  min-width: 225px;
+  margin-bottom: 0px;
 }
 
 /* ##### Login Form ###### */
 mat-form-field {
-  width: auto;
   background-color: #fff;
   color: #000;
-  margin: 5px;
-  padding: 5px 10px;
-  width: 75%;
-  min-width: 100px;
+  margin: 5px 0px;
+  padding: 7.5px 10px;
+  width: 100%;
+  min-width: 225px;
 }
 
-mat-placeholder {
-  color: #978f8f;
+.loginFormField{
+  padding-bottom: 0px;
+}
+
+.passwordVisibilityIcon{
+  position: absolute;
+  top:-18px;
+  left: -25px;
+}
+
+#passwordField{
+  height: 95px;
 }
 
 .mat-focused .placeholder {
@@ -76,10 +87,12 @@ mat-placeholder {
 #registerButton,
 #loginSubmit,
 #registerSubmit {
-  margin: 10px 0px;
+  margin: 10px auto;
   width: 275px;
+  width: 100%;
   font-weight: bold;
   font-size: 20px;
+  min-width: 225px;
 }
 
 #loginButton{
@@ -90,6 +103,12 @@ mat-placeholder {
 }
 
 /* ##### Media Queries ###### */
+@media(max-width: 725px) {
+  #passwordField{
+    height: 105px;
+  }
+}
+
 @media(max-width: 675px) {
   .header-content {
     width: 75%;
@@ -97,16 +116,7 @@ mat-placeholder {
 }
 
 @media(max-width: 400px) {
-
-  #loginButton,
-  #registerButton,
-  #loginSubmit,
-  #registerSubmit {
-    width: 75%;
-    min-width: 125px;
-  }
-
   h1 {
-    font-size: 10vw;
+    font-size: 36px;
   }
 }

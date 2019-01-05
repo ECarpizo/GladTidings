@@ -5,8 +5,6 @@ const Schema = mongoose.Schema;
 // how to have a schema inside another schema:
 // https://www.youtube.com/watch?v=3p0wmR973Fw&t=0s&index=10&list=PLp3WJHpPoQLHu3lUNzfJbDs7dnfc7bOLj
 let UserSchema = new Schema({
-  firstName: String,
-  lastName: String,
   email: {
     type: String,
     // required: true
@@ -24,6 +22,8 @@ let UserSchema = new Schema({
     type: String,
     // required: true
   },
+  firstName: String,
+  lastName: String,
   tier: {
     type: String,
     default: 'Standard'
@@ -35,20 +35,6 @@ let UserSchema = new Schema({
   created: {
     type: Date,
     default: Date.now
-  },
-  comments: {
-    type: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Comments'
-    }],
-    default: []
-  },
-  posts: {
-    type: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Posts'
-    }],
-    default: []
   }
 });
 

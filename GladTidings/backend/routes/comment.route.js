@@ -24,8 +24,7 @@ router.route('').get((req, res) => {
   Comment
     .find()
     .populate('post', '_id')
-    .populate('postedBy', 'firstName lastName')
-    .populate('replies')
+    .populate('author', 'firstName lastName')
     .exec()
     .then(comments => {
       res.status(200).json(comments);
@@ -42,9 +41,8 @@ router.route('').get((req, res) => {
 router.route('/getById/:id').get((req, res) => {
   Comment
     .findById(req.params.id)
-    .populate('postedBy', 'firstName lastName')
+    .populate('author', 'firstName lastName')
     .populate('post', '_id')
-    .populate('replies')
     .exec()
     .then(comment => {
       res.status(200).json(comment);
@@ -61,11 +59,10 @@ router.route('/getById/:id').get((req, res) => {
 router.route('/getByUser/:id').get((req, res) => {
   Comment
     .find({
-      postedBy: req.params.id
+      author: req.params.id
     })
-    .populate('postedBy', 'firstName lastName')
+    .populate('author', 'firstName lastName')
     .populate('post', '_id')
-    .populate('replies')
     .exec()
     .then(comments => {
       res.status(200).json(comments);
@@ -92,9 +89,8 @@ router.route('/update/:id').put((req, res) => {
         });
       return Comment
         .findById(req.params.id)
-        .populate('postedBy')
+        .populate('author')
         .populate('post', '_id')
-        .populate('replies')
         .exec()
         .then(comment => {
           res.status(200).json(comment);

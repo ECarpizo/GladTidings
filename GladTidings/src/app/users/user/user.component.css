@@ -1,0 +1,54 @@
+.spacer {
+  width: 100%;
+}
+
+.fields-container {
+  padding: 5%;
+}
+
+.rows>* {
+  width: 100%;
+  padding-bottom: 3px;
+}
+
+mat-radio-group mat-radio-button:nth-child(n+2),
+.buttons button:nth-child(n+2) {
+  margin-left: 10px;
+}
+
+#grid {
+  display: grid;
+  grid-template-areas: 'tile-1''tile-2';
+  grid-template-columns: 1fr;
+}
+
+#tile-1 {
+  grid-area: tile-1;
+  padding-bottom: 5px;
+}
+
+#tile-2 {
+  grid-area: tile-2;
+  margin: 10px 0px;
+}
+
+.btn-dialog-close {
+  width: 55px;
+  min-width: 0px !important;
+  height: 40px;
+  padding: 0px !important;
+}
+
+@media(max-width: 1050px) {
+  #tile-2 {
+    margin-top: 5%;
+  }
+}
+
+@media(max-width: 725px) {
+  #tile-2 {
+    margin-top: 15%;
+  }
+}
+
+

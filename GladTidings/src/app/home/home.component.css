@@ -90,7 +90,7 @@ main>* {
 
 .cover {
   margin: auto;
-  padding: 25vh;
+  /* padding: 25vh; */
 }
 
 .cover .btn-lg {
@@ -266,7 +266,6 @@ img.featurette-image.img-fluid.mx-auto{
 }
 @media(max-width: 975px) {
   .cover {
-    padding: 10%;
     font-size: .5rem;
   }
   .cover-heading {
@@ -326,7 +325,6 @@ img.featurette-image.img-fluid.mx-auto{
 
 @media(max-width:350px) {
   .cover {
-    padding: 5%;
     font-size: .5rem;
   }
 }

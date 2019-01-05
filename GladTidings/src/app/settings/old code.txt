@@ -1,0 +1,228 @@
+<app-navbar></app-navbar>
+
+
+<div>
+  <form [formGroup]="categoryForm">
+    <mat-card class="formContent">
+      <mat-form-field>
+        <input matInput formControlName='name' type="text" placeholder="Name">
+      </mat-form-field>
+      <mat-card class="formContent">
+        <button [disabled]="categoryForm.invalid" type="submit" (click)="createCategory()" mat-raised-button color="primary">Create
+          Category</button>
+      </mat-card>
+    </mat-card>
+  </form>
+</div>
+<div class="filters">
+  <!-- Search Bar -->
+  <input [(ngModel)]="searchText" placeholder="Search" class="search-bar">
+</div>
+<div class="form">
+  <!-- <form [formGroup]="postForm" (ngSubmit)="createPost()"> when I click the 'Add Category' button, the form thinks I am submitting... wtf? -->
+  <form [formGroup]="postForm">
+    <mat-card class="formContent">
+      <mat-card-title>Create Post</mat-card-title>
+      <mat-form-field>
+        <input matInput formControlName='title' type="text" placeholder="Title">
+      </mat-form-field>
+      <mat-divider></mat-divider>
+      <mat-form-field>
+        <input matInput formControlName='subtitle' type="text" placeholder="Subtitle">
+      </mat-form-field>
+      <mat-divider></mat-divider>
+      <div formArrayName="authors">
+        <h3>Authors</h3>
+        <button [disabled]="!authors.valid" mat-raised-button color="primary" (click)="addAuthor()" class="btn">Add
+          Author</button>
+        <div *ngFor="let author of authors.controls; let i=index" [formGroupName]="i" class="formContent">
+          <br>
+          <mat-form-field>
+            <input matInput formControlName='firstName' type="text" placeholder="First Name">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput formControlName='lastName' type="text" placeholder="Last Name">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput formControlName='email' type="email" placeholder="Email">
+          </mat-form-field>
+          <button *ngIf="authors.length > 1" mat-raised-button color="warn" (click)="deleteAuthor(i)" class="btn">Remove
+            Author</button>
+          <mat-divider></mat-divider>
+        </div>
+      </div>
+      <!-- <div>
+        <table class="table table-hover" id="screenings-table">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            //The paginate pipe must be at the end of all the filters
+            //<ng-container *ngFor="let i = index; let user of users | userSearch: searchText">
+            <ng-container *ngFor="let i = index; let user of users">
+              <tr>
+                <td>{{user.firstName}} {{user.lastName}}</td>
+                <td>{{user.email}}</td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div> -->
+      <br>
+      <h3>Post Content</h3>
+      <mat-form-field>
+        <!-- <textarea matInput formControlname='content' placeholder="Your articles content..."></textarea> -->
+        <textarea matInput formControlName='articleContent' type="text" placeholder="Your articles content..."></textarea>
+      </mat-form-field>
+      <mat-divider></mat-divider>
+      <br>
+      <div formArrayName="categories">
+        <h3>Categories</h3>
+        <button [disabled]="categories.pristine" mat-raised-button color="primary" (click)="addCategory()" class="btn">Add
+          Category</button>
+        <div *ngFor="let category of categories.controls; let j=index" [formGroupName]="j" class="formContent">
+          <br>
+          <mat-form-field>
+            <input matInput formControlName='name' type="text" placeholder="Category Name">
+          </mat-form-field>
+          <button *ngIf="categories.length > 1" mat-raised-button color="warn" (click)="deleteCategory(j)" class="btn">Remove
+            Category</button>
+          <mat-divider></mat-divider>
+        </div>
+      </div>
+      <br>
+      <mat-slide-toggle formControlName='publish' color="primary" (click)="togglePublish()">Publish Post</mat-slide-toggle>
+      <mat-divider></mat-divider>
+      <br>
+      <mat-card class="formContent">
+        <button [disabled]="postForm.invalid" type="submit" (click)="createPost()" mat-raised-button color="primary">Publish
+          Post</button>
+      </mat-card>
+    </mat-card>
+  </form>
+</div>
+<div class="preview">
+  <p>Current Form</p>
+  <p>Title: {{postForm.value.title | json}}</p>
+  <p>Subtitle: {{postForm.value.subtitle | json}}</p>
+  <p>Authors: {{postForm.value.authors | json}}</p>
+  <p>Content: {{postForm.value.articleContent | json}}</p>
+  <p>Categories: {{postForm.value.categories | json}}</p>
+</div>
+
+<div>
+  <p>{{ users | json }}</p>
+</div>
+
+
+css
+.form, .preview{
+    margin: 2.5%;
+    padding: 5%;
+}
+.formContent{
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 1fr;
+}
+.btn{
+   max-width: 150px;
+}
+
+/* #############################
+        TABLE STYLES
+############################# */
+#screenings-table{
+    max-height: 300px;
+    margin-bottom: 20px;
+}
+
+.table thead th, .table td, .table th{
+    border-top: 1px solid #b1b8bd;
+    border-bottom: 1px solid #7f97a8;
+    font-size: 15px;
+}
+.table td, .table th{
+    padding: .5rem;
+}
+.table td{
+    cursor: pointer;
+}
+.table-hover{
+    width: 100%;
+
+}
+
+~~~~~~~~~~~~~~~~~~
+
+<mat-list *ngFor="let user of users; let i=index">
+          <form [formGroup]="editUserForm" method="post" class="editUserForm">
+            <mat-form-field>
+              <input matInput formControlName='firstName' placeholder="First Name: {{user.firstName}}" value="{{user.firstName}}" type="text">
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput formControlName='lastName' placeholder="Last Name: {{user.lastName}}" value="{{user.lastName}}" type="text">
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput formControlName='email' placeholder="Email: {{user.email}}" value="{{user.email}}" type="text">
+            </mat-form-field>
+            <mat-form-field [ngClass]="{'increaseBottomMargin': editingUserIndices.includes(i)}">
+              <input matInput formControlName='password' placeholder="Password: {{user.password}}" value="{{user.password}}" type="text">
+              <!--
+                Would like there to be a feature where the hints x mark icon changes to a check mark icon when the condition is met.
+              <mat-hint>
+                  <div>
+                      <div>
+                        <mat-icon aria-label="x icon-button">{{getUserFormPassword() != undefined && getUserFormPassword().valid ? 'check' : 'clear'}}</mat-icon> Contains 1 capital letter
+                      </div>
+                      <div>
+                          <mat-icon aria-label="x icon-button">{{getUserFormPassword() != undefined && getUserFormPassword().valid ? 'check' : 'clear'}}</mat-icon> Contains 1 number
+                      </div>
+                      <div>
+                          <mat-icon aria-label="x icon-button">{{getUserFormPassword() != undefined && getUserFormPassword().valid ? 'check' : 'clear'}}</mat-icon> Contains 1 special character
+                      </div>
+                      <div>
+                          <mat-icon aria-label="x icon-button">{{getUserFormPassword() != undefined && getUserFormPassword() > 8 ? 'check' : 'clear'}}</mat-icon> Is at least 9 characters in length
+                      </div>
+                      <div>
+                          <mat-icon aria-label="x icon-button">{{getUserFormPassword() != undefined && getUserFormPassword().valid ? 'check' : 'clear'}}</mat-icon> Is no greater than 20 characters in length
+                      </div>
+                    </div>
+              </mat-hint> -->
+              <mat-hint *ngIf="editingUserIndices.includes(i)">Enter a password of at least 9 characters, but no greater than 20 characters. Passwords must at
+                least one uppercase letter, one lowercase letter, one number and one special character.</mat-hint>
+              <mat-icon matSuffix (click)="hidePassword = !hidePassword" class="passwordVisibilityIcon">{{hidePassword2
+                ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </mat-form-field>
+            <div class="tiers">
+              Privilege
+              <mat-radio-group matInput formControlName='tier' value="user.tier" type="radio">
+                <mat-radio-button value="Admin" [checked]="user.tier == 'Admin'">Admin</mat-radio-button>
+                <mat-radio-button value="Standard" [checked]="user.tier == 'Standard'">Standard</mat-radio-button>
+              </mat-radio-group>
+            </div>
+            <!-- <mat-form-field >
+              <input matInput formControlName='tier' placeholder="Priveleges: {{user.tier}}" type="text">
+            </mat-form-field> -->
+            <mat-form-field>
+              <input matInput placeholder="Active: {{user.active}}" disabled type="text">
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Date Created: {{user.created | date }}" disabled type="text">
+            </mat-form-field>
+            <div class="edit-buttons">
+              <button mat-icon-button color="primary" class="edit">
+                <mat-icon aria-label="x icon-button" (click)="editUser(i, user)">{{editingUserIndices != null && editingUserIndices.includes(i) ? 'edit_attributes' : 'toggle_on' }}</mat-icon>
+              </button>
+              <button mat-icon-button class="toggleActivation">
+                <mat-icon aria-label="x icon-button" (click)="toggleUserActivation(user)" [ngClass]="{'deactivate': user.active, 'activate': !user.active}">{{user.active
+                  ? 'highlight_off' : 'check_circle' }}</mat-icon>
+              </button>
+            </div>
+          </form>
+          <mat-divider class="row-divider"></mat-divider>
+          <br>
+        </mat-list>

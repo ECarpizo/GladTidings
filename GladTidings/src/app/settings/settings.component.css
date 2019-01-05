@@ -1,12 +1,109 @@
-.form, .preview{
-    margin: 2.5%;
-    padding: 5%;
+.spacer{
+    height: 20px;
+    margin-bottom: 25px;
 }
-.formContent{
-    display: grid;
-    grid-gap: 10px;
-    grid-template-columns: 1fr;
+.settings-container{
+    margin: 1% 5%;
+    padding: 3% 5%;
+    border: 1px solid #000;
+    min-width: 300px;
 }
-.btn{
-   max-width: 150px;
+
+.heading{
+    text-align: center;
+    margin-bottom: 25px;
 }
+#users-panel, #categories-panel, #posts-panel, mat-accordion{
+    min-width: 250px;
+}
+mat-expansion-panel{
+    min-width: 200px;
+}
+
+.row-divider{
+    margin-top: 15px;
+}
+
+/* Button styling */
+.success{
+    background-color: #28a745;
+    color: #fff;
+}
+
+/* Categories */
+#categories{
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+}
+.category-item{
+  display: grid;
+  grid-template-areas: "item icon";
+  grid-auto-rows: minmax(50px, min-content);
+  grid-template-columns: min-content min-content;
+}
+
+.item{
+  grid-area: item;
+  grid-template-columns: min-content;
+  justify-self: left;
+  white-space:nowrap;
+}
+.delete-icon{
+  grid-area: icon;
+  grid-template-columns: min-content;
+  justify-self: right;
+}
+
+/* Form structure */
+#createUserForm, .editUserForm {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+/* Edit Buttons */
+.edit-buttons{
+  display: grid;
+  grid-template-areas: "edit toggle";
+  justify-content: start;
+}
+.edit, .toggleActivation{
+  align-self: left;
+}
+
+.edit{
+  grid-area: edit;
+}
+.toggleActivation{
+  grid-area: toggle;
+}
+
+.tiers{
+  margin-top: 10px;
+  margin-bottom: 0px;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-gap: 5px;
+}
+mat-radio-button{
+  margin-right: 15px;
+}
+
+/* Create User */
+
+.increaseBottomMargin{
+  margin-bottom: 10px;
+}
+
+/* Create user buttons */
+.bordered-button {
+  border: 2px solid;
+}
+
+.deactivate{
+  color: red;
+}
+
+.activate {
+  color: green;
+}
+

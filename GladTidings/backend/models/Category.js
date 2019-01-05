@@ -4,6 +4,9 @@ const Schema = mongoose.Schema;
 
 let CategorySchema = new Schema({
     name: String,
-    category: Boolean
+    active: {
+        type: Boolean,
+        default: true
+      }
 });
 module.exports = mongoose.model('Categories', CategorySchema);
