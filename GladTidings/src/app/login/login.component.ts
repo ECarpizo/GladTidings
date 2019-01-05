@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { UserService } from '../services/user.service';
+import { UtilityService } from '../services/utility.service';
 
 @Component({
   selector: 'app-login',
@@ -17,10 +18,10 @@ export class LoginComponent implements OnInit {
   panelOpenState = false;
   toggleLogin = false;
   toggleRegister = false;
-  loginPromptText = 'Login';
-  registerPromptText = 'Register';
+  loginPromptText;
+  registerPromptText;
 
-  constructor(private userService: UserService, private fb: FormBuilder, private router: Router) {
+  constructor(private userService: UserService, private fb: FormBuilder, private router: Router, private utilityService: UtilityService) {
     this.loginForm = this.fb.group({
       loginEmail: ['', [
         Validators.required,
@@ -53,6 +54,14 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  ngOnInit() {
+    if (this.userService.getCurrentUser() == null)
+      this.loginPromptText = 'Login';
+    else
+      this.loginPromptText = 'Logout';
+    this.registerPromptText = 'Register';
+  }
+
   getLoginEmail() {
     return this.loginForm.get('loginEmail');
   }
@@ -77,23 +86,29 @@ export class LoginComponent implements OnInit {
     return this.registerForm.get('registerPassword');
   }
 
-  ngOnInit() {
+  getErrorMessage() {
+    if(this.loginForm.controls.loginEmail.hasError('required'))
+      return 'Please enter a valid email.';
   }
 
-  login(email: string, password: string) {
-    this.userService.getUserByCredentials(email, password).subscribe(data => {
+  login() {
+    this.userService.getUserByCredentials(this.loginForm.value.loginEmail, this.loginForm.value.loginPassword).subscribe(data => {
+      this.toggleLogin = !this.toggleLogin
+      this.loginPromptText = 'Log In';
+      this.loginForm.reset();
       if (data._id !== undefined || data._id !== null) {
         this.userService.setCurrentUser(data);
         localStorage.setItem("userID", data._id);
         localStorage.setItem("userType", data.tier);
-        this.loginPromptText = 'Login'
         this.router.navigate(['/home']);
       }
     });
   }
 
-  register(firstName: string, lastName: string, email: string, password: string) {
-    this.userService.addUser(firstName, lastName, email, password).subscribe(data => {
+  register() {
+    this.userService.createUser(this.registerForm.value.firstName, this.registerForm.value.lastName, this.registerForm.value.registerEmail, this.registerForm.value.registerPassword, null).subscribe(data => {
+      // could optimize by not subscribing.
+      this.toggleRegister = !this.toggleRegister;
       this.registerPromptText = 'Register';
       this.registerForm.reset();
       this.router.navigate(['/login']);
@@ -101,20 +116,24 @@ export class LoginComponent implements OnInit {
   }
 
   toggleLoginForm() {
-    // flag controlling whether or not the form shows
-    this.toggleLogin = !this.toggleLogin;
-    // if the register button is open, close it
-    if (this.toggleRegister) {
-      this.toggleRegister = !this.toggleRegister;
-    }
-    // change the Login prompt to a Back prompt
-    // and vice versa
-    if (this.loginPromptText == 'Login')
-      this.loginPromptText = 'Back';
+    if (this.userService.getCurrentUser() != null)
+      this.utilityService.logout();
     else {
-      this.loginPromptText = 'Login';
-      // reset the form values if going Back
-      this.loginForm.reset();
+      // flag controlling whether or not the form shows
+      this.toggleLogin = !this.toggleLogin;
+      // if the register button is open, close it
+      if (this.toggleRegister) {
+        this.toggleRegister = !this.toggleRegister;
+      }
+      // change the Login prompt to a Back prompt
+      // and vice versa
+      if (this.loginPromptText == 'Login')
+        this.loginPromptText = 'Back';
+      else {
+        this.loginPromptText = 'Login';
+        // reset the form values if going Back
+        this.loginForm.reset();
+      }
     }
   }
 

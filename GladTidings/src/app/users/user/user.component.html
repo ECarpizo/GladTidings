@@ -1,0 +1,46 @@
+<mat-toolbar>
+  <span>{{userService.adminsEditForm.controls['$key'].value? "Edit User Info" : "Create New User"}}</span>
+  <span class="spacer"></span>
+  <button class="btn-dialog-close" mat-stroked-button (click)="resetForm()" tabIndex="-1"><mat-icon>clear</mat-icon></button>
+</mat-toolbar>
+<form [formGroup]="userService.adminsEditForm">
+  <div id="grid" class="fields-container">
+    <div class="rows" id="tile-1">
+      <input type="hidden" formControlName="$key">
+      <mat-form-field>
+        <input formControlName="firstName" maxlength="35" placeholder="First Name" matInput>
+        <mat-error>This field is required in order to create a new user.</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input formControlName="lastName" maxlength="35" placeholder="Last Name" matInput>
+        <mat-error>This field is required in order to create a new user.</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input formControlName="email" maxlength="255" placeholder="Email" matInput>
+        <mat-error *ngIf="userService.adminsEditForm.controls['email'].errors?.email">That is not a valid email address.</mat-error>
+        <mat-error *ngIf="userService.adminsEditForm.controls['email'].errors?.required">This is required to create a new user.</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input formControlName="password" maxlength="20" placeholder="Password" matInput [type]="hidePassword ? 'password' : 'text'">
+        <mat-hint>Enter a password of at least 9 characters, but no greater than 20 characters. Passwords must
+          at
+          least one uppercase letter, one lowercase letter, one number and one special character.</mat-hint>
+        <mat-icon matSuffix (click)="hidePassword = !hidePassword" class="passwordVisibilityIcon">{{hidePassword
+          ?
+          'visibility_off' : 'visibility'}}</mat-icon>
+      </mat-form-field>
+    </div>
+    <div>
+      <div class="rows" id="tile-2">
+        <mat-radio-group formControlName='tier'>
+          <mat-radio-button value="Standard">Standard</mat-radio-button>
+          <mat-radio-button value="Admin">Admin</mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+    <div class="buttons">
+      <button mat-raised-button color="primary" type="reset" (click)="submitUserForm()" [disabled]="userService.adminsEditForm.pristine || userService.adminsEditForm.invalid">Submit</button>
+      <button mat-raised-button color="warn" type="reset" *ngIf="!userService.adminsEditForm.controls['$key'].value">Clear</button>
+    </div>
+  </div>
+</form>

@@ -1,72 +1,151 @@
 <app-navbar></app-navbar>
-<div class="form">
-  <form [formGroup]="postForm" (ngSubmit)="createPost()">
-    <mat-card class="formContent">
-      <mat-card-title>Create Post</mat-card-title>
-      <mat-form-field>
-        <input matInput formControlName='title' type="text" placeholder="Title">
-      </mat-form-field>
-      <mat-divider></mat-divider>
-      <mat-form-field>
-        <input matInput formControlName='subtitle' type="text" placeholder="Subtitle">
-      </mat-form-field>
-      <mat-divider></mat-divider>
-      <div formArrayName="authors">
-        <h3>Authors</h3>
-        <button [disabled]="!authors.valid" mat-raised-button color="primary" (click)="addAuthor()" class="btn">Add
-          Author</button>
-        <div *ngFor="let author of authors.controls; let i=index" [formGroupName]="i" class="formContent">
-          <br>
-          <mat-form-field>
-            <input matInput formControlName='firstName' type="text" placeholder="First Name">
-          </mat-form-field>
-          <mat-form-field>
-            <input matInput formControlName='lastName' type="text" placeholder="Last Name">
-          </mat-form-field>
-          <mat-form-field>
-            <input matInput formControlName='email' type="email" placeholder="Email">
-          </mat-form-field>
-          <button *ngIf="authors.length > 1" mat-raised-button color="warn" (click)="deleteAuthor(i)" class="btn">Remove
-            Author</button>
-          <mat-divider></mat-divider>
+<div class="spacer"></div>
+<div class="settings-container">
+  <header>
+    <h1 class="heading">SETTINGS</h1>
+  </header>
+
+  <!-- Container of all settings -->
+  <mat-accordion multi="true">
+    <!-- CATERGORIES -->
+    <mat-expansion-panel id="categories-panel">
+      <mat-expansion-panel-header>
+        Categories
+      </mat-expansion-panel-header>
+      <mat-list id="categories">
+        <div *ngFor="let category of activeCategories" class="category-item">
+          <mat-list-item class="item">
+            {{category.name}}
+          </mat-list-item>
+          <button mat-icon-button color="warn" class="delete-icon">
+            <mat-icon aria-label="x icon-button" (click)="deleteCategory(category)">clear</mat-icon>
+          </button>
         </div>
-      </div>
-      <br>
-      <h3>Post Content</h3>
-      <mat-form-field>
-        <!-- <textarea matInput formControlname='content' placeholder="Your articles content..."></textarea> -->
-        <textarea matInput formControlName='articleContent' type="text" placeholder="Your articles content..."></textarea>
-      </mat-form-field>
-      <mat-divider></mat-divider>
-      <br>
-      <div formArrayName="categories">
-        <h3>Categories</h3>
-        <button [disabled]="categories.pristine || categories.untouched" mat-raised-button color="primary" (click)="addCategory()"
-          class="btn">Add Category</button>
-        <div *ngFor="let category of categories.controls; let j=index" [formGroupName]="j" class="formContent">
-          <br>
+      </mat-list>
+      <!-- Options -->
+      <mat-accordion multi="true">
+        <!-- List -->
+        <!-- Create -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            Create Category
+          </mat-expansion-panel-header>
+          <div>
+            <form [formGroup]="categoryForm">
+              <mat-card class="formContent">
+                <mat-form-field>
+                  <input matInput formControlName='name' type="text" placeholder="Name">
+                </mat-form-field>
+                <mat-card class="formContent">
+                  <button [disabled]="categoryForm.invalid" type="submit" (click)="createCategory()" mat-raised-button
+                    class="success">Create
+                    Category</button>
+                </mat-card>
+              </mat-card>
+            </form>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </mat-expansion-panel>
+    <!-- POSTS -->
+    <mat-expansion-panel id="posts-panel">
+      <mat-expansion-panel-header>
+        Posts
+      </mat-expansion-panel-header>
+      <app-post-list></app-post-list>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          Create Post
+        </mat-expansion-panel-header>
+        <app-post></app-post>
+      </mat-expansion-panel>
+    </mat-expansion-panel>
+    <!-- USERS -->
+    <mat-expansion-panel id="users-panel">
+      <mat-expansion-panel-header>
+        Users
+      </mat-expansion-panel-header>
+      <app-user-list></app-user-list>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
+
+<!-- Previous code for the users panel -->
+<!-- <mat-accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        All Users
+      </mat-expansion-panel-header>
+      //<mat-divider></mat-divider>//
+      <mat-list *ngFor="let user of users">
+        <mat-divider></mat-divider>
+        <br>
+        <mat-list-item>Name: {{user.firstName}} {{user.lastName}} </mat-list-item>
+        <mat-list-item>Email: {{user.email}}</mat-list-item>
+        <mat-list-item>Priveleges: {{user.tier}}</mat-list-item>
+        <mat-list-item>Active: {{user.active}}</mat-list-item>
+        <mat-list-item>Date Created: {{user.created | date }}</mat-list-item>
+        <button mat-icon-button color="primary">
+          <mat-icon aria-label="x icon-button" (click)="editUser(user)">edit</mat-icon>
+        </button>
+        <button mat-icon-button>
+          <mat-icon aria-label="x icon-button" (click)="toggleUserActivation(user)" [ngClass]="{'deactivate': user.active, 'activate': !user.active}">{{user.active
+            ? 'highlight_off' : 'check_circle' }}</mat-icon>
+        </button>
+      </mat-list>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        Create User
+      </mat-expansion-panel-header>
+      <div>
+        <form [formGroup]="createUserForm" method="post" id="createUserForm">
           <mat-form-field>
-            <input matInput formControlName='name' type="text" placeholder="Category Name">
+            <input matInput formControlName='firstName' placeholder="First Name" type="text">
           </mat-form-field>
-          <button mat-raised-button color="warn" (click)="deleteCategory(j)" class="btn">Remove Category</button>
-          <mat-divider></mat-divider>
-        </div>
+          <mat-form-field>
+            <input matInput formControlName='lastName' placeholder="Last Name" type="text">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput formControlName='userFormEmail' placeholder="Email" type="email">
+          </mat-form-field>
+          <mat-form-field class="increaseBottomMargin">
+            <input matInput formControlName='userFormPassword' placeholder="Password" [type]="hidePassword ? 'password' : 'text'">
+            //
+                    Would like there to be a feature where the hints x mark icon changes to a check mark icon when the condition is met.
+                  <mat-hint>
+                      <div>
+                          <div>
+                            <mat-icon aria-label="x icon-button">{{getUserFormPassword() != undefined && getUserFormPassword().valid ? 'check' : 'clear'}}</mat-icon> Contains 1 capital letter
+                          </div>
+                          <div>
+                              <mat-icon aria-label="x icon-button">{{getUserFormPassword() != undefined && getUserFormPassword().valid ? 'check' : 'clear'}}</mat-icon> Contains 1 number
+                          </div>
+                          <div>
+                              <mat-icon aria-label="x icon-button">{{getUserFormPassword() != undefined && getUserFormPassword().valid ? 'check' : 'clear'}}</mat-icon> Contains 1 special character
+                          </div>
+                          <div>
+                              <mat-icon aria-label="x icon-button">{{getUserFormPassword() != undefined && getUserFormPassword() > 8 ? 'check' : 'clear'}}</mat-icon> Is at least 9 characters in length
+                          </div>
+                          <div>
+                              <mat-icon aria-label="x icon-button">{{getUserFormPassword() != undefined && getUserFormPassword().valid ? 'check' : 'clear'}}</mat-icon> Is no greater than 20 characters in length
+                          </div>
+                        </div>
+                  </mat-hint>//
+            <mat-hint>Enter a password of at least 9 characters, but no greater than 20 characters. Passwords must
+              at
+              least one uppercase letter, one lowercase letter, one number and one special character.</mat-hint>
+            <mat-icon matSuffix (click)="hidePassword = !hidePassword" class="passwordVisibilityIcon">{{hidePassword
+              ?
+              'visibility_off' : 'visibility'}}</mat-icon>
+          </mat-form-field>
+          <mat-divider class="row-divider"></mat-divider>
+          <button mat-raised-button type="reset" (click)="createUser()" [disabled]="createUserForm.pristine || createUserForm.invalid"
+            class="btn btn-success">Create Account</button>
+        </form>
       </div>
-      <br>
-      <mat-slide-toggle color="primary" (click)="togglePublish()">Publish Post</mat-slide-toggle>
-      <mat-divider></mat-divider>
-      <br>
-      <mat-card class="formContent">
-        <button [disabled]="postForm.invalid" mat-raised-button color="primary">Publish Post</button>
-      </mat-card>
-    </mat-card>
-  </form>
-</div>
-<div class="preview">
-  <p>Current Form</p>
-  <p>Title: {{postForm.value.title | json}}</p>
-  <p>Subtitle: {{postForm.value.subtitle | json}}</p>
-  <p>Authors: {{postForm.value.authors | json}}</p>
-  <p>Content: {{postForm.value.articleContent | json}}</p>
-  <p>Categories: {{postForm.value.categories | json}}</p>
-</div>
+      <app-user-list></app-user-list>
+      //<mat-divider class="row-divider"></mat-divider>
+      <app-users></app-users>//
+    </mat-expansion-panel>
+  </mat-accordion> -->

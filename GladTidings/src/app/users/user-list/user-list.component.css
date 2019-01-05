@@ -1,0 +1,63 @@
+.hide {
+  display: none;
+}
+
+mat-footer-row mat-footer-cell {
+  justify-content: center;
+  font-style: italic;
+}
+
+/* Search Bar Styles */
+.search-bar-div {
+  margin: 0px;
+  display: flex;
+}
+
+#search-bar{
+  height: 40px;
+  padding: 0px 10px 10px 10px;
+  margin-bottom: 10px;
+}
+
+.search-bar-form-field {
+  width: 100%;
+  height: 30px;
+  padding: 5px 10px;
+  background-color: #eeeeee;
+  border-radius: 5px;
+}
+
+mat-form-field div.mat-form-field-wrapper{
+  margin-bottom: 5px;
+}
+
+/* Deactivate user button */
+.bordered-button {
+  border: 2px solid;
+}
+
+.deactivate{
+  color: red;
+}
+
+.activate {
+  color: green;
+}
+
+/* User Table */
+.user-table{
+  width: 100%;
+}
+.left-margin{
+  margin-left: 10px;
+}
+
+.password-font-color{
+  color: rgba(0,0,0,.87);
+}
+
+/* Create Button */
+.create-btn{
+  height: 40px;
+  margin-right: 10px;
+}

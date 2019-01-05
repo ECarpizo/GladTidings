@@ -28,10 +28,10 @@ const options = {
 };
 mongoose.connect(uri, options);
 
-const connection = mongoose.connection;
-connection.once('open', () => {
-    console.log('MongoDB database connection established successfully!');
-});
+// const connection = mongoose.connection;
+// connection.once('open', () => {
+//     console.log('MongoDB database connection established successfully!');
+// });
 
 
 // API routes

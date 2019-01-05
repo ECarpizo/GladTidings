@@ -22,50 +22,49 @@
   <!-- bootstrap container containing the login form -->
   <div class="header-overlay"></div>
   <div class="header-content">
-    <h1 class="h1 mb-1 font-weight-bold" routerLink="/home">Glad Tidings</h1>
+    <h1 class="h1 font-weight-bold" routerLink="/home">Glad Tidings</h1>
     <button *ngIf="!toggleRegister" (click)="toggleLoginForm()" id="loginButton" class="btn btn-primary">{{loginPromptText}}</button>
-    <form *ngIf="toggleLogin" [formGroup]="loginForm" action="login" method="post" class="animated fadeIn delay-.2s primary-button mb-10">
-      <mat-form-field standard>
-        <input matInput formControlName='loginEmail' #loginEmail type="email" autofocus>
-        <mat-placeholder class="placeholder" *ngIf="getLoginEmail().value == '' || getLoginEmail().value == null">Email</mat-placeholder>
-        <mat-error *ngIf="loginEmail.invalid && loginEmail.touched">That doesn't look like an email address</mat-error>
+    <form *ngIf="toggleLogin" [formGroup]="loginForm" (ngSubmit)="login()" action="login" method="post" class="animated fadeIn delay-.2s primary-button mb-10">
+      <mat-form-field class="loginFormField">
+        <input matInput placeholder="Enter your email" formControlName='loginEmail' type="email" autofocus>
       </mat-form-field>
-      <mat-form-field>
-        <input matInput formControlName='loginPassword' #loginPassword [type]="hidePassword ? 'password' : 'text'">
-        <mat-icon matSuffix (click)="hidePassword = !hidePassword">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-        <mat-placeholder class="placeholder" *ngIf="getLoginPassword().value == '' || getLoginPassword().value == null">Password</mat-placeholder>
-        <!-- <mat-hint *ngIf="password.errors?.min && password.touched">Enter a password of at least 8 characters</mat-hint>
-            <mat-hint *ngIf="password.errors?.max && password.touched">20 characters is the max length for a password.</mat-hint>
-            <mat-hint *ngIf="password.errors?.pattern && password.touched">Passwords must have at least 1 character and number.</mat-hint> -->
+      <mat-form-field class="loginFormField">
+        <input matInput formControlName='loginPassword' placeholder="Enter your password" [type]="hidePassword ? 'password' : 'text'">
+        <mat-icon matSuffix (click)="hidePassword = !hidePassword" class="passwordVisibilityIcon">{{hidePassword ?
+          'visibility_off' : 'visibility'}}</mat-icon>
       </mat-form-field>
       <div>
-        <button mat-raised-button type="submit" id="loginSubmit" (click)="login(loginEmail.value, loginPassword.value); toggleLogin = !toggleLogin;"
-          [disabled]="loginForm.pristine || loginForm.invalid" class="btn btn-success">Signin</button>
+        <button mat-raised-button type="submit" id="loginSubmit" [disabled]="loginForm.pristine || loginForm.invalid"
+          class="btn btn-success">Signin</button>
       </div>
     </form>
     <!-- </mat-expansion-panel> -->
     <br>
-    <button *ngIf="!toggleLogin" (click)="toggleRegisterForm()" id="registerButton" class="btn btn-success">{{registerPromptText}}</button>
-    <form *ngIf="toggleRegister" [formGroup]="registerForm" action="login"
-      method="post" class="animated fadeIn delay-.2s">
+    <button *ngIf="!toggleLogin" (click)="toggleRegisterForm()" id="registerButton" class="btn btn-primary" [ngClass]="{'btn-primary': registerPromptText == 'Back', 'btn-success': registerPromptText =='Register'}">{{registerPromptText}}</button>
+    <form *ngIf="toggleRegister" [formGroup]="registerForm" (ngSubmit)="register()" action="login" method="post" class="animated fadeIn delay-.2s">
       <mat-form-field>
-        <input matInput formControlName='firstName' #firstName type="text">
-        <mat-placeholder class="placeholder" *ngIf="getRegisterFirstName().value == '' || getRegisterFirstName().value == null">First Name</mat-placeholder>
+        <input matInput formControlName='firstName' placeholder="First Name" type="text">
       </mat-form-field>
       <mat-form-field>
-        <input matInput formControlName='lastName' #lastName type="text">
-        <mat-placeholder class="placeholder" *ngIf="getRegisterLastName().value == '' || getRegisterLastName().value == null">Last Name</mat-placeholder>
+        <input matInput formControlName='lastName' placeholder="Last Name" type="text">
       </mat-form-field>
       <mat-form-field>
-        <input matInput formControlName='registerEmail' #registerEmail type="email">
-        <mat-placeholder class="placeholder" *ngIf="getRegisterEmail().value == '' || getRegisterEmail().value == null">Email</mat-placeholder>
+        <input matInput formControlName='registerEmail' placeholder="Email" type="email">
+        <mat-error *ngIf="getRegisterEmail().invalid || getRegisterEmail().touched">{{getErrorMessage()}}</mat-error>
       </mat-form-field>
-      <mat-form-field>
-        <input matInput formControlName='registerPassword' #registerPassword type="password">
-        <mat-placeholder class="placeholder" *ngIf="getRegisterPassword().value == '' || getRegisterPassword().value == null">Password</mat-placeholder>
+      <mat-form-field id="passwordField">
+        <input matInput formControlName='registerPassword' placeholder="Password" [type]="hidePassword ? 'password' : 'text'">
+        <mat-hint *ngIf="getRegisterPassword().invalid || getRegisterPassword().touched" align="end">
+          Password must have 1 capital letter, 1 number, 1 special character, and at least 9 characters.
+        </mat-hint>
+        <!-- <mat-hint *ngIf="password.errors?.min && password.touched">Enter a password of at least 8 characters</mat-hint>
+            <mat-hint *ngIf="password.errors?.max && password.touched">20 characters is the max length for a password.</mat-hint>
+            <mat-hint *ngIf="password.errors?.pattern && password.touched">Passwords must have at least 1 character and number.</mat-hint> -->
+        <mat-icon matSuffix (click)="hidePassword = !hidePassword" class="passwordVisibilityIcon">{{hidePassword ?
+          'visibility_off' : 'visibility'}}</mat-icon>
       </mat-form-field>
-      <button mat-raised-button id="registerSubmit" type="submit" (click)="register(firstName.value, lastName.value, registerEmail.value, registerPassword.value); toggleRegister = !toggleRegister;"
-        [disabled]="registerForm.pristine || registerForm.invalid" class="btn btn-primary">Create Account</button>
+      <button mat-raised-button type="submit" id="registerSubmit" [disabled]="registerForm.pristine || registerForm.invalid"
+        class="btn btn-success">Create Account</button>
     </form>
   </div>
 </header>

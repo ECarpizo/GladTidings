@@ -77,28 +77,77 @@ router.route('/getByCredentials').post((req, res) => {
 // Update User info
 router.route('/update/:id').put((req, res) => {
   User
-    .update({
-      _id: req.params.id
-    }, req.body)
-    .then(doc => {
-      if (!doc)
+    .findOneAndUpdate({_id: req.params.id}, req.body, {
+      new: true
+    }, (err, user) => {
+      if (err)
         return res.status(404).json({
           message: 'Unable to update user',
           error: err
         });
-      return User.findById(req.params.id)
-        .exec()
-        .then(user => {
-          res.status(200).json(user);
+      else {
+        return res.status(200).json({
+          message: 'Update successful',
+          user: user
         });
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: 'Unable to update user',
-        error: err,
-        body: req.body
-      });
+      }
     });
+});
+
+// Update User info
+// router.route('/update/:id').put((req, res) => {
+//   User
+//     .update({
+//       _id: req.params.id
+//     }, req.body)
+//     .then(doc => {
+//       if (!doc)
+//         return res.status(404).json({
+//           message: 'Unable to update user',
+//           error: err
+//         });
+//       return User.findById(req.params.id)
+//         .exec()
+//         .then(user => {
+//           res.status(200).json({user: user});
+//         });
+//     })
+//     .catch(err => {
+//       res.status(500).send({
+//         message: 'Unable to update user',
+//         error: err,
+//         body: req.body
+//       });
+//     });
+// });
+
+// Update User info
+router.route('/toggle/:id').put((req, res) => {
+  console.log("Request Body");
+  console.log(req.body);
+  User.findById(req.params.id, (err, user) => {
+    if (!user || err)
+      return new Error('Could not load user: ' + err);
+    else {
+
+      if (req.body.active != null || req.body.active != undefined)
+        user.active = req.body.active;
+      user.save()
+        .then(user => {
+          console.log(user);
+          res.json({
+            message: 'User updated!',
+            user: user
+          });
+        })
+        .catch(err => {
+          res.status(400).send('User failed to update');
+        })
+        .catch(err => {
+          res.status(500).send('Database error');
+        });
+    }
+  });
 });
 
 // Delete (never have to delete users. Just disable active status to "false")

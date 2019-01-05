@@ -3,10 +3,11 @@ const express = require('express'),
   router = express.Router();
 
 const Post = require('../models/Post');
+const User = require('../models/User');
+const Category = require('../models/Category');
 
 // Create new Post
 router.route('/create').post((req, res) => {
-  console.log(req.body);
   let post = new Post(req.body);
   post
     .save()
@@ -82,31 +83,21 @@ router.route('/getByAuthors/:id').get((req, res) => {
 // Update Post info
 router.route('/update/:id').put((req, res) => {
   Post
-    .update({
-      _id: req.params.id
-    }, req.body)
-    .then(doc => {
-      if (!doc)
+    .findOneAndUpdate({ _id: req.params.id}, req.body), {
+      new: true
+    }, (err, post) => {
+      if (err)
         return res.status(404).json({
           message: 'Unable to update post',
           error: err
         });
-      return Post
-        .findById(req.params.id)
-        .populate('authors', '_id firstName lastName')
-        .populate('categories')
-        .exec()
-        .then(post => {
-          res.status(200).json(post);
+      else {
+        return res.status(200).json({
+          message: 'Update successful',
+          post: post
         });
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: 'Unable to update post',
-        error: err,
-        body: req.body
-      });
-    });
+      }
+    }
 });
 
 // Delete (never have to delete posts. Just disable active status to "false")

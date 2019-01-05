@@ -1,0 +1,81 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {
+  MatToolbarModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatOptionModule,
+  MatSelectModule,
+  MatIconModule,
+  MatButtonModule,
+  MatCardModule,
+  MatTableModule,
+  MatDividerModule,
+  MatSnackBarModule,
+  MatExpansionModule,
+  MatCheckboxModule,
+  MatSlideToggleModule,
+  MatProgressBarModule,
+  MatPaginatorModule,
+  MatBadgeModule,
+  MatRadioModule,
+  MatListModule,
+  MatGridListModule,
+  MatSortModule,
+  MatDialogModule
+} from '@angular/material';
+// import {  } from '@angular/material/list';
+
+@NgModule({
+  imports: [
+    MatToolbarModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatIconModule,
+    MatButtonModule,
+    MatCardModule,
+    MatTableModule,
+    MatDividerModule,
+    MatSnackBarModule,
+    MatExpansionModule,
+    MatCheckboxModule,
+    MatSlideToggleModule,
+    MatProgressBarModule,
+    MatBadgeModule,
+    MatRadioModule,
+    MatListModule,
+    MatGridListModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatDialogModule
+  ],
+  exports: [
+    MatToolbarModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatIconModule,
+    MatButtonModule,
+    MatCardModule,
+    MatTableModule,
+    MatDividerModule,
+    MatSnackBarModule,
+    MatExpansionModule,
+    MatCheckboxModule,
+    MatSlideToggleModule,
+    MatProgressBarModule,
+    MatPaginatorModule,
+    MatBadgeModule,
+    MatRadioModule,
+    MatListModule,
+    MatGridListModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatDialogModule
+  ],
+  declarations: []
+})
+export class AngularMaterialModule { }
